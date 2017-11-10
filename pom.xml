@@ -38,6 +38,7 @@ written permission of Adobe.
         <module>bundles/communities-ugc-migration-legacyExport</module>
         <module>bundles/communities-ugc-migration-legacyProfileExport</module>
         <module>content</module>
+        <module>bundles/communities-ugc-management</module>
     </modules>
 
     <profiles>
@@ -46,6 +47,7 @@ written permission of Adobe.
             <activation>
                 <activeByDefault>true</activeByDefault>
             </activation>
+
             <build>
                 <plugins>
                     <plugin>
@@ -103,17 +105,6 @@ written permission of Adobe.
         </profile>
     </profiles>
 
-    <distributionManagement>
-        <snapshotRepository>
-            <id>${snapshotRepository-Id}</id>
-            <name>${snapshotRepository-Name}</name>
-            <url>${snapshotRepository-URL}</url>
-        </snapshotRepository>
-        <repository>
-            <id>${releaseRepository-Id}</id>
-            <name>${releaseRepository-Name}</name>
-            <url>${releaseRepository-URL}</url>
-        </repository>
-    </distributionManagement>
+
 
 </project>

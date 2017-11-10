@@ -5,9 +5,9 @@ ADOBE SYSTEMS INCORPORATED
  Copyright 2015 Adobe Systems Incorporated
  All Rights Reserved.
 
-NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the 
-terms of the Adobe license agreement accompanying it.  If you have received this file from a 
-source other than Adobe, then your use, modification, or distribution of it requires the prior 
+NOTICE:  Adobe permits you to use, modify, and distribute this file in accordance with the
+terms of the Adobe license agreement accompanying it.  If you have received this file from a
+source other than Adobe, then your use, modification, or distribution of it requires the prior
 written permission of Adobe.
 
 -->
@@ -27,9 +27,9 @@ written permission of Adobe.
     <!-- ====================================================================== -->
     <!-- P R O J E C T  D E S C R I P T I O N                                   -->
     <!-- ====================================================================== -->
-    <artifactId>communities-ugc-migration</artifactId>
+    <artifactId>communities-ugc-management</artifactId>
     <packaging>bundle</packaging>
-    <name>AEM Communities UGC Migration - Bundle</name>
+    <name>AEM Communities UGC Management - Bundle</name>
 
     <!-- ====================================================================== -->
     <!-- B U I L D   D E F I N I T I O N                                        -->
@@ -140,8 +140,15 @@ written permission of Adobe.
         <dependency>
             <groupId>com.adobe.cq.social</groupId>
             <artifactId>cq-socialcommunities-api</artifactId>
-            <version>1.8.448</version>
+            <version>1.13.48-SNAPSHOT</version>
         </dependency>
+
+        <dependency>
+            <groupId>com.adobe.cq.social</groupId>
+            <artifactId>cq-social-ideation-api</artifactId>
+            <version>1.1.4</version>
+        </dependency>
+
         <dependency>
             <groupId>com.adobe.aem</groupId>
             <artifactId>uber-jar</artifactId>
