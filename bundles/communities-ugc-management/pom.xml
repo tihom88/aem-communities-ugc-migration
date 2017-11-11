@@ -140,7 +140,7 @@ written permission of Adobe.
         <dependency>
             <groupId>com.adobe.cq.social</groupId>
             <artifactId>cq-socialcommunities-api</artifactId>
-            <version>1.13.48-SNAPSHOT</version>
+            <version>1.13.78</version>
         </dependency>
 
         <dependency>
