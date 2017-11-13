@@ -1,10 +1,10 @@
-package com.adobe.communities.ugc.management.components.blog;
+package com.adobe.communities.ugc.management.components.forum;
 
-import com.adobe.communities.ugc.management.commons.DefaultUserUgcFilter;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.journal.client.api.Journal;
-import com.adobe.cq.social.journal.client.endpoints.JournalOperations;
+import com.adobe.cq.social.forum.client.api.Forum;
+import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
 import com.adobe.cq.social.ugc.api.UgcFilter;
 import org.apache.felix.scr.annotations.Reference;
 
@@ -14,15 +14,15 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class BlogCommentUserUgcFilter extends DefaultUserUgcFilter {
+public class ForumCommentComponentUserUgc extends DefaultComponentUserUgc {
 
     @Reference
-    JournalOperations journalOperations;
+    ForumOperations forumOperations;
 
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Journal.RESOURCE_TYPE_COMMENT);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, Forum.RESOURCE_TYPE_POST);
         return filters;
     }
 
@@ -32,7 +32,7 @@ public class BlogCommentUserUgcFilter extends DefaultUserUgcFilter {
     }
 
     public CommentOperations getCommentOperations() {
-        return journalOperations;
+        return forumOperations;
     }
 
     @Override

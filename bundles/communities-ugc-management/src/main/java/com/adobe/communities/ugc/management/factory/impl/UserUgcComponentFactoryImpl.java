@@ -1,29 +1,28 @@
 package com.adobe.communities.ugc.management.factory.impl;
 
 import com.adobe.communities.ugc.management.commons.ComponentEnum;
-import com.adobe.communities.ugc.management.commons.UserUgcFilter;
-import com.adobe.communities.ugc.management.components.activitystreams.ActivityStreamsUserUgcFilter;
-import com.adobe.communities.ugc.management.components.calendar.CalendarCommentUserUgcFilter;
-import com.adobe.communities.ugc.management.components.calendar.CalendarEventUserUgcFilter;
-import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryDocumentUserUgcFilter;
-import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryFolderUserUgcFilter;
-import com.adobe.communities.ugc.management.components.ideation.IdeationCommentUserUgcFilter;
-import com.adobe.communities.ugc.management.components.ideation.IdeationIdeaUserUgcFilter;
-import com.adobe.communities.ugc.management.components.qna.QnaPostUserUgcFilter;
-import com.adobe.communities.ugc.management.components.qna.QnaTopicUserUgcFilter;
-import com.adobe.communities.ugc.management.components.tally.LikingUserUgcFilter;
-import com.adobe.communities.ugc.management.components.tally.RatingUserUgcFilter;
-import com.adobe.communities.ugc.management.components.tally.VotingUserUgcFilter;
+import com.adobe.communities.ugc.management.commons.ComponentUserUgc;
+import com.adobe.communities.ugc.management.components.activitystreams.ActivityStreamsComponentUserUgc;
+import com.adobe.communities.ugc.management.components.calendar.CalendarCommentComponentUserUgc;
+import com.adobe.communities.ugc.management.components.calendar.CalendarEventComponentUserUgc;
+import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryDocumentComponentUserUgc;
+import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryFolderComponentUserUgc;
+import com.adobe.communities.ugc.management.components.ideation.IdeationCommentComponentUserUgc;
+import com.adobe.communities.ugc.management.components.ideation.IdeationIdeaComponentUserUgc;
+import com.adobe.communities.ugc.management.components.qna.QnaPostComponentUserUgc;
+import com.adobe.communities.ugc.management.components.qna.QnaTopicComponentUserUgc;
+import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
+import com.adobe.communities.ugc.management.components.tally.RatingComponentUserUgc;
+import com.adobe.communities.ugc.management.components.tally.VotingComponentUserUgc;
 import com.adobe.communities.ugc.management.factory.UserUgcComponentFactory;
-import com.adobe.communities.ugc.management.components.blog.BlogCommentUserUgcFilter;
-import com.adobe.communities.ugc.management.components.blog.BlogEntryUserUgcFilter;
-import com.adobe.communities.ugc.management.components.forum.ForumCommentUserUgcFilter;
-import com.adobe.communities.ugc.management.components.forum.ForumEntryUserUgcFilter;
+import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
+import com.adobe.communities.ugc.management.components.blog.BlogEntryComponentUserUgc;
+import com.adobe.communities.ugc.management.components.forum.ForumCommentComponentUserUgc;
+import com.adobe.communities.ugc.management.components.forum.ForumEntryComponentUserUgc;
 import com.adobe.cq.social.calendar.client.endpoints.CalendarOperations;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.filelibrary.client.endpoints.FileLibraryOperations;
 import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
-import com.adobe.cq.social.ideation.client.endpoints.IdeationOperationExtension;
 import com.adobe.cq.social.ideation.client.endpoints.IdeationOperations;
 import com.adobe.cq.social.journal.client.endpoints.JournalOperations;
 import com.adobe.cq.social.qna.client.endpoints.QnaForumOperations;
@@ -76,64 +75,64 @@ public class UserUgcComponentFactoryImpl implements UserUgcComponentFactory {
     private SlingHttpServletRequest request;
 
 
-    public UserUgcFilter getUserUgcFilter(ComponentEnum componentEnum){
+    public ComponentUserUgc getUserUgcFilter(ComponentEnum componentEnum){
 
-        UserUgcFilter userUgcFilter;
+        ComponentUserUgc componentUserUgc;
 
 
         switch(componentEnum){
             case BLOG_ENTRY:
-                userUgcFilter = new BlogEntryUserUgcFilter();
+                componentUserUgc = new BlogEntryComponentUserUgc();
                 break;
             case BLOG_COMMENT:
-                userUgcFilter = new BlogCommentUserUgcFilter();
+                componentUserUgc = new BlogCommentComponentUserUgc();
                 break;
             case FORUM_ENTRY:
-                userUgcFilter = new ForumEntryUserUgcFilter();
+                componentUserUgc = new ForumEntryComponentUserUgc();
                 break;
             case FORUM_COMMENT:
-                userUgcFilter = new ForumCommentUserUgcFilter();
+                componentUserUgc = new ForumCommentComponentUserUgc();
                 break;
             case CALENDAR_EVENT:
-                userUgcFilter = new CalendarEventUserUgcFilter();
+                componentUserUgc = new CalendarEventComponentUserUgc();
                 break;
             case CALENDAR_COMMENT:
-                userUgcFilter = new CalendarCommentUserUgcFilter();
+                componentUserUgc = new CalendarCommentComponentUserUgc();
                 break;
             case QNA_POST:
-                userUgcFilter = new QnaPostUserUgcFilter();
+                componentUserUgc = new QnaPostComponentUserUgc();
                 break;
             case QNA_TOPIC:
-                userUgcFilter = new QnaTopicUserUgcFilter();
+                componentUserUgc = new QnaTopicComponentUserUgc();
                 break;
             case FILE_LIBRARY_DOCUMENT:
-                userUgcFilter = new FileLibraryDocumentUserUgcFilter();
+                componentUserUgc = new FileLibraryDocumentComponentUserUgc();
                 break;
             case FILE_LIBRARY_FOLDER:
-                userUgcFilter = new FileLibraryFolderUserUgcFilter();
+                componentUserUgc = new FileLibraryFolderComponentUserUgc();
                 break;
             case IDEATION_COMMENT:
-                userUgcFilter = new IdeationCommentUserUgcFilter();
+                componentUserUgc = new IdeationCommentComponentUserUgc();
                 break;
             case IDEATION_IDEA:
-                userUgcFilter = new IdeationIdeaUserUgcFilter();
+                componentUserUgc = new IdeationIdeaComponentUserUgc();
                 break;
-            case TALLY_LIKING:
-                userUgcFilter = new LikingUserUgcFilter();
-                break;
-            case TALLY_RATING:
-                userUgcFilter = new RatingUserUgcFilter();
-                break;
-            case TALLY_VOTING:
-                userUgcFilter = new VotingUserUgcFilter();
-                break;
-            case ACTIVITY_STREAMS:
-                userUgcFilter = new ActivityStreamsUserUgcFilter();
-                break;
+//            case TALLY_LIKING:
+//                componentUserUgc = new LikingComponentUserUgc();
+//                break;
+//            case TALLY_RATING:
+//                componentUserUgc = new RatingComponentUserUgc();
+//                break;
+//            case TALLY_VOTING:
+//                componentUserUgc = new VotingComponentUserUgc();
+//                break;
+//            case ACTIVITY_STREAMS:
+//                componentUserUgc = new ActivityStreamsComponentUserUgc();
+//                break;
             default:
                 throw new RuntimeException("ComponentEnum not defined for fetching userContent");
         }
-        return userUgcFilter;
+        return componentUserUgc;
     }
 
     @Override
@@ -178,7 +177,7 @@ public class UserUgcComponentFactoryImpl implements UserUgcComponentFactory {
 
 
     @Override
-    public UserUgcFilter getUserUgcFilter(Class T) {
+    public ComponentUserUgc getUserUgcFilter(Class T) {
         return null;
     }
 }

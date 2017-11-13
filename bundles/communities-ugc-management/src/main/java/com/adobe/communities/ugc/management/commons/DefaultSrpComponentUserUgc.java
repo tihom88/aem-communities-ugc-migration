@@ -1,39 +1,24 @@
-package com.adobe.communities.ugc.management.components.activitystreams;
+package com.adobe.communities.ugc.management.commons;
 
-import com.adobe.communities.ugc.management.commons.ComponentEnum;
-import com.adobe.communities.ugc.management.commons.DefaultUserUgcFilter;
-import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.cq.social.activitystreams.api.SocialActivity;
-import com.adobe.cq.social.activitystreams.api.SocialActivityEventConstants;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.journal.client.api.Journal;
 import com.adobe.cq.social.scf.OperationException;
 import com.adobe.cq.social.srp.SocialResourceProvider;
 import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
-import com.adobe.cq.social.ugc.api.SearchResults;
-import com.adobe.cq.social.ugc.api.UgcFilter;
-import com.adobe.cq.social.ugc.api.UgcSearch;
-import org.apache.felix.scr.annotations.Component;
+import com.adobe.cq.social.ugc.api.*;
 import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.Service;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
- * Created by mokatari on 10/13/17.
+ * Created by mokatari on 10/12/17.
  */
-
-@Service
-@Component
-public class ActivityStreamsUserUgcFilter extends DefaultUserUgcFilter {
+public abstract class DefaultSrpComponentUserUgc implements SrpComponentUserUgc {
 
     @Reference
     UgcSearch ugcSearch;
@@ -41,28 +26,43 @@ public class ActivityStreamsUserUgcFilter extends DefaultUserUgcFilter {
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
 
-    @Override
-    public Map<String, String> getComponentfilters() {
-        final Map<String, String> filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, "social/activitystreams/components/activity");
-        return filters;
-    }
+    public abstract Map<String, String> getComponentfilters();
 
-    @Override
-    public String getUserIdentifierKey() {
-        return Identifiers.ACTOR_ID;
-    }
+    public abstract String getUserIdentifierKey();
 
-    public CommentOperations getCommentOperations() {
-        return null;
-    }
+//    public abstract CommentOperations getCommentOperations();
 
-    @Override
     public UgcFilter getUgcFilter(String user) {
-        return super.getUgcFilter(user);
+
+        UgcFilter ugcShowcaseFilter = new UgcFilter();
+        ConstraintGroup resourceGroupConstraint = new ConstraintGroup(Operator.And);
+        Map<String, String> resourceTypeList = getComponentfilters();
+        for (Map.Entry<String, String> entry : resourceTypeList.entrySet()) {
+            resourceGroupConstraint.addConstraint(new ValueConstraint<String>(entry.getKey(), entry.getValue(), ComparisonType.Equals,
+                    Operator.Or));
+        }
+        ConstraintGroup userGroup = new ConstraintGroup(Operator.And);
+        String userIdentifierKey = getUserIdentifierKey();
+        userGroup.addConstraint(new ValueConstraint<String>(userIdentifierKey, user, ComparisonType.Equals,
+                Operator.Or));
+        ConstraintGroup andcons = new ConstraintGroup(Operator.Or); // doesn't matter
+        andcons.addConstraint(resourceGroupConstraint);
+        andcons.addConstraint(userGroup);
+        ugcShowcaseFilter.and(andcons);
+        return ugcShowcaseFilter;
     }
 
+    public SearchResults<Resource> getUserUgc(ResourceResolver resourceResolver, String userId) {
 
+        SearchResults<Resource> results;
+        try {
+            // Max value need to be checked (MAX_VALUE can't be used, throwing out of range error )
+            results = ugcSearch.find(null, resourceResolver, getUgcFilter(userId), 0, 100000, false);
+        } catch (RepositoryException e) {
+            throw new RuntimeException(e);
+        }
+        return results;
+    }
 
     public boolean deleteUserUgc(ResourceResolver resourceResolver, String userId) throws OperationException {
 
@@ -92,4 +92,6 @@ public class ActivityStreamsUserUgcFilter extends DefaultUserUgcFilter {
         }
     }
 
+
 }
+

@@ -1,13 +1,12 @@
-package com.adobe.communities.ugc.management.components.calendar;
+package com.adobe.communities.ugc.management.components.ideation;
 
-import com.adobe.communities.ugc.management.commons.DefaultUserUgcFilter;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.cq.social.calendar.client.api.Calendar;
-import com.adobe.cq.social.calendar.client.endpoints.CalendarOperations;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.journal.client.api.Journal;
+import com.adobe.cq.social.ideation.client.api.Ideation;
+import com.adobe.cq.social.ideation.client.endpoints.IdeationOperations;
 import com.adobe.cq.social.ugc.api.UgcFilter;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.apache.felix.scr.annotations.Reference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,15 +14,15 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class CalendarEventUserUgcFilter extends DefaultUserUgcFilter {
+public class IdeationIdeaComponentUserUgc extends DefaultComponentUserUgc {
 
     @Reference
-    CalendarOperations calendarOperations;
+    IdeationOperations ideationOperations;
 
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Calendar.RESOURCE_TYPE_EVENT);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, Ideation.RESOURCE_TYPE_IDEA);
         return filters;
     }
 
@@ -33,7 +32,7 @@ public class CalendarEventUserUgcFilter extends DefaultUserUgcFilter {
     }
 
     public CommentOperations getCommentOperations() {
-        return calendarOperations;
+        return ideationOperations;
     }
 
     @Override

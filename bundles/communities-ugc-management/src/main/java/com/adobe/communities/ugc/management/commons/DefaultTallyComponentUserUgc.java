@@ -1,14 +1,13 @@
 package com.adobe.communities.ugc.management.commons;
 
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.journal.client.endpoints.JournalOperations;
 import com.adobe.cq.social.scf.OperationException;
 import com.adobe.cq.social.srp.SocialResourceProvider;
 import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
+import com.adobe.cq.social.tally.client.endpoints.TallyOperationsService;
 import com.adobe.cq.social.ugc.api.*;
 import org.apache.felix.scr.annotations.Reference;
-import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 
@@ -19,7 +18,7 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/12/17.
  */
-public abstract class DefaultUserUgcFilter implements UserUgcFilter {
+public abstract class DefaultTallyComponentUserUgc implements TallyComponentUserUgc {
 
     @Reference
     UgcSearch ugcSearch;
@@ -27,11 +26,16 @@ public abstract class DefaultUserUgcFilter implements UserUgcFilter {
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
 
+    @Reference
+    private TallyOperationsService tallyOperationsService;
+
     public abstract Map<String, String> getComponentfilters();
 
     public abstract String getUserIdentifierKey();
 
-    public abstract CommentOperations getCommentOperations();
+    public TallyOperationsService getTallyOperationsService(){
+        return tallyOperationsService;
+    }
 
     public UgcFilter getUgcFilter(String user) {
 
@@ -81,7 +85,7 @@ public abstract class DefaultUserUgcFilter implements UserUgcFilter {
                 srp.setConfig(storageConfig);
                 boolean isUgcPresent = srp.getResource(resourceResolver, resource.getPath()) != null ? true : false;
                 if (isUgcPresent) {
-                    getCommentOperations().delete(resource, session);
+                    getTallyOperationsService().removeCurrentUserResponse(resource, resource.getPath());
                     session.save();
                 }
             }

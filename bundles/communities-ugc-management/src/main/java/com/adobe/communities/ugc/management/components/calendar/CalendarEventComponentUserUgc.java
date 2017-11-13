@@ -1,14 +1,12 @@
-package com.adobe.communities.ugc.management.components.forum;
+package com.adobe.communities.ugc.management.components.calendar;
 
-import com.adobe.communities.ugc.management.commons.DefaultUserUgcFilter;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
+import com.adobe.cq.social.calendar.client.api.Calendar;
+import com.adobe.cq.social.calendar.client.endpoints.CalendarOperations;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.forum.client.api.Forum;
-import com.adobe.cq.social.forum.client.endpoints.ForumOperationExtension;
-import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
-import com.adobe.cq.social.qna.client.endpoints.QnaForumOperations;
 import com.adobe.cq.social.ugc.api.UgcFilter;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.apache.felix.scr.annotations.Reference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,15 +14,15 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class ForumCommentUserUgcFilter extends DefaultUserUgcFilter {
+public class CalendarEventComponentUserUgc extends DefaultComponentUserUgc {
 
     @Reference
-    ForumOperations forumOperations;
+    CalendarOperations calendarOperations;
 
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Forum.RESOURCE_TYPE_POST);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, Calendar.RESOURCE_TYPE_EVENT);
         return filters;
     }
 
@@ -34,7 +32,7 @@ public class ForumCommentUserUgcFilter extends DefaultUserUgcFilter {
     }
 
     public CommentOperations getCommentOperations() {
-        return forumOperations;
+        return calendarOperations;
     }
 
     @Override

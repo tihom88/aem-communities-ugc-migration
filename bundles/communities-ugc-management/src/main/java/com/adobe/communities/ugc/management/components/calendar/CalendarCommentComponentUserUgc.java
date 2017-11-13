@@ -1,12 +1,12 @@
 package com.adobe.communities.ugc.management.components.calendar;
 
-import com.adobe.communities.ugc.management.commons.DefaultUserUgcFilter;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.cq.social.calendar.client.api.Calendar;
 import com.adobe.cq.social.calendar.client.endpoints.CalendarOperations;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.ugc.api.UgcFilter;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.apache.felix.scr.annotations.Reference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class CalendarCommentUserUgcFilter extends DefaultUserUgcFilter {
+public class CalendarCommentComponentUserUgc extends DefaultComponentUserUgc {
 
     @Reference
     CalendarOperations calendarOperations;

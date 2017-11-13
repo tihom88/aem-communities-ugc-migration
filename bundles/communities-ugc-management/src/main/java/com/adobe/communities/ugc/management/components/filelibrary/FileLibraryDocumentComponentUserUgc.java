@@ -1,13 +1,12 @@
-package com.adobe.communities.ugc.management.components.ideation;
+package com.adobe.communities.ugc.management.components.filelibrary;
 
-import com.adobe.communities.ugc.management.commons.DefaultUserUgcFilter;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.forum.client.api.Forum;
-import com.adobe.cq.social.ideation.client.api.Ideation;
-import com.adobe.cq.social.ideation.client.endpoints.IdeationOperations;
+import com.adobe.cq.social.filelibrary.client.api.FileLibrary;
+import com.adobe.cq.social.filelibrary.client.endpoints.FileLibraryOperations;
 import com.adobe.cq.social.ugc.api.UgcFilter;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.apache.felix.scr.annotations.Reference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,15 +14,15 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class IdeationIdeaUserUgcFilter extends DefaultUserUgcFilter {
+public class FileLibraryDocumentComponentUserUgc extends DefaultComponentUserUgc {
 
     @Reference
-    IdeationOperations ideationOperations;
+    FileLibraryOperations fileLibraryOperations;
 
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Ideation.RESOURCE_TYPE_IDEA);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, FileLibrary.RESOURCE_TYPE_DOCUMENT);
         return filters;
     }
 
@@ -33,7 +32,7 @@ public class IdeationIdeaUserUgcFilter extends DefaultUserUgcFilter {
     }
 
     public CommentOperations getCommentOperations() {
-        return ideationOperations;
+        return fileLibraryOperations;
     }
 
     @Override

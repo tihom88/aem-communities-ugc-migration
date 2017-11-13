@@ -1,12 +1,12 @@
-package com.adobe.communities.ugc.management.components.blog;
+package com.adobe.communities.ugc.management.components.qna;
 
-import com.adobe.communities.ugc.management.commons.DefaultUserUgcFilter;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.journal.client.api.Journal;
-import com.adobe.cq.social.journal.client.endpoints.JournalOperations;
+import com.adobe.cq.social.qna.client.api.QnaPost;
+import com.adobe.cq.social.qna.client.endpoints.QnaForumOperations;
 import com.adobe.cq.social.ugc.api.UgcFilter;
-import jdk.nashorn.internal.ir.annotations.Reference;
+import org.apache.felix.scr.annotations.Reference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,15 +14,15 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class BlogEntryUserUgcFilter extends DefaultUserUgcFilter {
+public class QnaTopicComponentUserUgc extends DefaultComponentUserUgc {
 
     @Reference
-    JournalOperations journalOperations;
+    QnaForumOperations qnaForumOperations;
 
     @Override
     public Map<String, String> getComponentfilters() {
-        final Map<String, String> filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Journal.RESOURCE_TYPE_ENTRY);
+        final Map<String, String>  filters = new HashMap<String, String>();
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, QnaPost.RESOURCE_TYPE_TOPIC);
         return filters;
     }
 
@@ -32,7 +32,7 @@ public class BlogEntryUserUgcFilter extends DefaultUserUgcFilter {
     }
 
     public CommentOperations getCommentOperations() {
-        return journalOperations;
+        return qnaForumOperations;
     }
 
     @Override
