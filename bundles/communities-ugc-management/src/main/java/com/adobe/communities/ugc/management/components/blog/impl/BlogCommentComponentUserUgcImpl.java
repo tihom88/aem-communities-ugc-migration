@@ -2,6 +2,8 @@ package com.adobe.communities.ugc.management.components.blog.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
+import com.adobe.communities.ugc.management.commons.deleteoperation.CommentDeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
 import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.journal.client.api.Journal;
@@ -37,8 +39,8 @@ public class BlogCommentComponentUserUgcImpl extends DefaultComponentUserUgc imp
         return Identifiers.AUTHORIZABLE_ID;
     }
 
-    public CommentOperations getCommentOperations() {
-        return journalOperations;
+    public DeleteOperation getOperations() {
+        return new CommentDeleteOperation(journalOperations);
     }
 
     @Override

@@ -1,5 +1,6 @@
 package com.adobe.communities.ugc.management.commons;
 
+import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.scf.OperationException;
 import com.adobe.cq.social.srp.SocialResourceProvider;
@@ -33,7 +34,7 @@ public abstract class DefaultComponentUserUgc implements ComponentUserUgc {
 
     public abstract String getUserIdentifierKey();
 
-    public abstract CommentOperations getCommentOperations();
+    public abstract DeleteOperation getOperations();
 
     public UgcFilter getUgcFilter(String user) {
 
@@ -83,7 +84,7 @@ public abstract class DefaultComponentUserUgc implements ComponentUserUgc {
                 srp.setConfig(storageConfig);
                 boolean isUgcPresent = srp.getResource(resourceResolver, resource.getPath()) != null ? true : false;
                 if (isUgcPresent) {
-                    getCommentOperations().delete(resource, session);
+                    getOperations().delete(resourceResolver, resource, session);
                     session.save();
                 }
             }

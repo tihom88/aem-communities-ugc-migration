@@ -30,7 +30,7 @@ public abstract class DefaultSrpComponentUserUgc implements SrpComponentUserUgc 
 
     public abstract String getUserIdentifierKey();
 
-//    public abstract CommentOperations getCommentOperations();
+//    public abstract CommentOperations getOperations();
 
     public UgcFilter getUgcFilter(String user) {
 

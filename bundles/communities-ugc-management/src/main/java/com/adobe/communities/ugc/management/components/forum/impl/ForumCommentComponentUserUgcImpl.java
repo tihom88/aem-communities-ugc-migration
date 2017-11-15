@@ -2,11 +2,16 @@ package com.adobe.communities.ugc.management.components.forum.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
+import com.adobe.communities.ugc.management.commons.deleteoperation.CommentDeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
+import com.adobe.communities.ugc.management.components.forum.ForumCommentComponentUserUgc;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.forum.client.api.Forum;
 import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
 import com.adobe.cq.social.ugc.api.UgcFilter;
+import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
+import org.apache.felix.scr.annotations.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,7 +19,9 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class ForumCommentComponentUserUgcImpl extends DefaultComponentUserUgc {
+@Component
+@Service
+public class ForumCommentComponentUserUgcImpl extends DefaultComponentUserUgc implements ForumCommentComponentUserUgc {
 
     @Reference
     ForumOperations forumOperations;
@@ -31,10 +38,9 @@ public class ForumCommentComponentUserUgcImpl extends DefaultComponentUserUgc {
         return Identifiers.AUTHORIZABLE_ID;
     }
 
-    public CommentOperations getCommentOperations() {
-        return forumOperations;
+    public DeleteOperation getOperations() {
+        return new CommentDeleteOperation(forumOperations);
     }
-
     @Override
     public UgcFilter getUgcFilter(String user) {
         return super.getUgcFilter(user);

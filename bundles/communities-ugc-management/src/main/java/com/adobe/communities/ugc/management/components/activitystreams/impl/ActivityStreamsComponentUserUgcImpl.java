@@ -4,6 +4,9 @@ import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.DefaultSrpComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.communities.ugc.management.commons.SrpComponentUserUgc;
+import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.SrpDeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.SrpOperations;
 import com.adobe.communities.ugc.management.components.activitystreams.ActivityStreamsComponentUserUgc;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.scf.OperationException;
@@ -31,10 +34,13 @@ import java.util.Map;
 
 @Service
 @Component
-public class ActivityStreamsComponentUserUgcImpl extends DefaultSrpComponentUserUgc implements ActivityStreamsComponentUserUgc {
+public class ActivityStreamsComponentUserUgcImpl extends DefaultComponentUserUgc implements ActivityStreamsComponentUserUgc {
 
     @Reference
     UgcSearch ugcSearch;
+
+    @Reference
+    SrpOperations srpOperations;
 
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
@@ -51,9 +57,9 @@ public class ActivityStreamsComponentUserUgcImpl extends DefaultSrpComponentUser
         return Identifiers.ACTOR_ID;
     }
 
-//    public CommentOperations getCommentOperations() {
-//        return null;
-//    }
+    public DeleteOperation getOperations() {
+        return new SrpDeleteOperation(srpOperations);
+    }
 
     @Override
     public UgcFilter getUgcFilter(String user) {
