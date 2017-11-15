@@ -1,10 +1,10 @@
-package com.adobe.communities.ugc.management.components.forum;
+package com.adobe.communities.ugc.management.components.filelibrary.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.forum.client.api.Forum;
-import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
+import com.adobe.cq.social.filelibrary.client.api.FileLibrary;
+import com.adobe.cq.social.filelibrary.client.endpoints.FileLibraryOperations;
 import com.adobe.cq.social.ugc.api.UgcFilter;
 import org.apache.felix.scr.annotations.Reference;
 
@@ -14,15 +14,15 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class ForumEntryComponentUserUgcImpl extends DefaultComponentUserUgc {
+public class FileLibraryDocumentComponentUserUgcImpl extends DefaultComponentUserUgc {
 
     @Reference
-    ForumOperations forumOperations;
+    FileLibraryOperations fileLibraryOperations;
 
     @Override
     public Map<String, String> getComponentfilters() {
-        final Map<String, String> filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Forum.RESOURCE_TYPE_TOPIC);
+        final Map<String, String>  filters = new HashMap<String, String>();
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, FileLibrary.RESOURCE_TYPE_DOCUMENT);
         return filters;
     }
 
@@ -32,7 +32,7 @@ public class ForumEntryComponentUserUgcImpl extends DefaultComponentUserUgc {
     }
 
     public CommentOperations getCommentOperations() {
-        return forumOperations;
+        return fileLibraryOperations;
     }
 
     @Override

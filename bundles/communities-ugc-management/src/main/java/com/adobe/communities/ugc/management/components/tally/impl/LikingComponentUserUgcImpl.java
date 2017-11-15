@@ -1,9 +1,10 @@
-package com.adobe.communities.ugc.management.components.tally;
+package com.adobe.communities.ugc.management.components.tally.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.DefaultSrpComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.DefaultTallyComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
+import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.tally.client.api.LikingSocialComponent;
 import com.adobe.cq.social.tally.client.endpoints.TallyOperationsService;
@@ -15,7 +16,7 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class LikingComponentUserUgcImpl extends DefaultTallyComponentUserUgc {
+public class LikingComponentUserUgcImpl extends DefaultTallyComponentUserUgc implements LikingComponentUserUgc{
 
     @Override
     public Map<String, String> getComponentfilters() {

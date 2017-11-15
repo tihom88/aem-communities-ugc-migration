@@ -1,4 +1,4 @@
-package com.adobe.communities.ugc.management.components.calendar;
+package com.adobe.communities.ugc.management.components.calendar.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;

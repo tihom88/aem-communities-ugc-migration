@@ -1,10 +1,10 @@
-package com.adobe.communities.ugc.management.components.qna;
+package com.adobe.communities.ugc.management.components.calendar.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
+import com.adobe.cq.social.calendar.client.api.Calendar;
+import com.adobe.cq.social.calendar.client.endpoints.CalendarOperations;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.qna.client.api.QnaPost;
-import com.adobe.cq.social.qna.client.endpoints.QnaForumOperations;
 import com.adobe.cq.social.ugc.api.UgcFilter;
 import org.apache.felix.scr.annotations.Reference;
 
@@ -14,15 +14,15 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class QnaTopicComponentUserUgcImpl extends DefaultComponentUserUgc {
+public class CalendarCommentComponentUserUgcImpl extends DefaultComponentUserUgc {
 
     @Reference
-    QnaForumOperations qnaForumOperations;
+    CalendarOperations calendarOperations;
 
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, QnaPost.RESOURCE_TYPE_TOPIC);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, Calendar.RESOURCE_TYPE_EVENT_REPLY);
         return filters;
     }
 
@@ -32,7 +32,7 @@ public class QnaTopicComponentUserUgcImpl extends DefaultComponentUserUgc {
     }
 
     public CommentOperations getCommentOperations() {
-        return qnaForumOperations;
+        return calendarOperations;
     }
 
     @Override

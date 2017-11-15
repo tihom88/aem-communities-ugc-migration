@@ -1,4 +1,4 @@
-package com.adobe.communities.ugc.management.components.qna;
+package com.adobe.communities.ugc.management.components.qna.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class QnaPostComponentUserUgcImpl extends DefaultComponentUserUgc {
+public class QnaTopicComponentUserUgcImpl extends DefaultComponentUserUgc {
 
     @Reference
     QnaForumOperations qnaForumOperations;
@@ -22,7 +22,7 @@ public class QnaPostComponentUserUgcImpl extends DefaultComponentUserUgc {
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, QnaPost.RESOURCE_TYPE_POST);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, QnaPost.RESOURCE_TYPE_TOPIC);
         return filters;
     }
 
