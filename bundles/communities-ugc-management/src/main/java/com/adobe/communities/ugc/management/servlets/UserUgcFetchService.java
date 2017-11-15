@@ -14,6 +14,7 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
+import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.jcr.JsonItemWriter;
 import org.slf4j.Logger;
@@ -43,7 +44,7 @@ import org.apache.felix.scr.annotations.Reference;
 @Component
 @Service
 @Properties({@Property(name = "sling.servlet.paths", value = "/services/social/gdpr/getuserugc")})
-public class UserUgcFetchService extends SlingAllMethodsServlet {
+public class UserUgcFetchService extends SlingSafeMethodsServlet {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

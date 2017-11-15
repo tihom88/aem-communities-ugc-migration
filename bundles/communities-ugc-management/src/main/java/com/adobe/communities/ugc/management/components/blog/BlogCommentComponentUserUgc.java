@@ -19,10 +19,10 @@ import java.util.Map;
 
 @Component
 @Service
-public class BlogCommentComponentUserUgc extends DefaultComponentUserUgc {
+public class BlogCommentComponentUserUgc extends DefaultComponentUserUgc implements BComponentUserUgc{
 
     @Reference
-    JournalOperations journalOperations;
+    private JournalOperations journalOperations;
 
     @Override
     public Map<String, String> getComponentfilters() {

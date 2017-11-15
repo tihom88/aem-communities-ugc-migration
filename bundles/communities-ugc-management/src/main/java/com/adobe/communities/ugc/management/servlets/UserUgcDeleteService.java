@@ -15,6 +15,7 @@ import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.apache.sling.api.servlets.SlingAllMethodsServlet;
+import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.apache.sling.commons.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +36,7 @@ import java.util.List;
 @Component
 @Service
 @Properties({@Property(name = "sling.servlet.paths", value = "/services/social/gdpr/deleteuserugc")})
-public class UserUgcDeleteService extends SlingAllMethodsServlet {
+public class UserUgcDeleteService extends SlingSafeMethodsServlet {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

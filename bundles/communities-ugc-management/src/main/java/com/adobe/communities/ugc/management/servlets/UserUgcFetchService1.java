@@ -1,9 +1,7 @@
 package com.adobe.communities.ugc.management.servlets;
 
 import com.adobe.communities.ugc.management.commons.ComponentEnum;
-import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
-import com.adobe.communities.ugc.management.factory.UserUgcComponentFactory;
-import com.adobe.communities.ugc.management.service.UserManagementService;
+import com.adobe.communities.ugc.management.components.blog.BComponentUserUgc;
 import com.adobe.communities.ugc.management.util.ZipCreator;
 import com.adobe.cq.social.srp.SocialResourceProvider;
 import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
@@ -12,12 +10,11 @@ import com.adobe.cq.social.ugc.api.SearchResults;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.commons.io.IOUtils;
 import org.apache.felix.scr.annotations.*;
-import org.apache.felix.scr.annotations.Properties;
 import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.api.servlets.SlingAllMethodsServlet;
+import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.apache.sling.commons.json.JSONException;
 import org.apache.sling.commons.json.jcr.JsonItemWriter;
 import org.slf4j.Logger;
@@ -28,7 +25,9 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.servlet.ServletException;
 import java.io.*;
-import java.util.*;
+import java.util.List;
+import java.util.Map;
+import java.util.UUID;
 import java.util.zip.ZipOutputStream;
 //import org.apache.sling.commons.json.JSONObject;
 //import org.apache.sling.servlets.post.JSONResponse;
@@ -38,10 +37,14 @@ import java.util.zip.ZipOutputStream;
  * Created by mokatari on 10/11/17.
  */
 
+
+
+
+
 @Component
 @Service
 @Properties({@Property(name = "sling.servlet.paths", value = "/services/social/gdpr/getuserugc1")})
-public class UserUgcFetchService1 extends SlingAllMethodsServlet {
+public class UserUgcFetchService1 extends SlingSafeMethodsServlet {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -52,13 +55,7 @@ public class UserUgcFetchService1 extends SlingAllMethodsServlet {
     private UgcSearch ugcSearch;
 
     @Reference
-    private UserUgcComponentFactory userUgcComponentFactory;
-
-    @Reference
-    UserManagementService userManagementService;
-
-    @Reference
-    BlogCommentComponentUserUgc blogCommentComponentUserUgc;
+    BComponentUserUgc blogCommentComponentUserUgc;
 
     @Override
     protected void doGet(final SlingHttpServletRequest req,
@@ -92,9 +89,9 @@ public class UserUgcFetchService1 extends SlingAllMethodsServlet {
 //        resp.setHeader(headerKey, headerValue);
 
         String userUgcJson = null;
-//        userUgcJson = createJsonResponse(resultsList);
+        userUgcJson = createJsonResponse(res);
 //        createZip(req, resp, userUgcJson, attachmentPaths);
-        resp.getOutputStream().println(res.toString());
+        resp.getOutputStream().println(userUgcJson.toString());
     }
 
     private void createZip(final SlingHttpServletRequest req,
@@ -144,15 +141,15 @@ public class UserUgcFetchService1 extends SlingAllMethodsServlet {
 
     }
 
-    private String createJsonResponse(Map<ComponentEnum, SearchResults<Resource>> resultsList) throws ServletException {
+    private String createJsonResponse(SearchResults<Resource> results) throws ServletException {
         StringBuilder response = new StringBuilder();
 
         boolean isEmpty = true;
         response.append("[");
         final JsonItemWriter jsonWriter = new JsonItemWriter(null);
         try {
-            for (Map.Entry<ComponentEnum, SearchResults<Resource>> entry : resultsList.entrySet()) {
-                for (Resource resultRes : entry.getValue().getResults()) {
+
+                for (Resource resultRes : results.getResults()) {
                     Node node = null;
                     final StringWriter stringWriter = new StringWriter();
 
@@ -163,7 +160,7 @@ public class UserUgcFetchService1 extends SlingAllMethodsServlet {
                     response.append(stringWriter.toString() + ",");
                     isEmpty = false;
                 }
-            }
+
         } catch (RepositoryException e) {
             throw new ServletException(e);
         } catch (JSONException e) {
