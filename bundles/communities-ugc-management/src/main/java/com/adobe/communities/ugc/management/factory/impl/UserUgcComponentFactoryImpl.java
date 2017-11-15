@@ -2,23 +2,19 @@ package com.adobe.communities.ugc.management.factory.impl;
 
 import com.adobe.communities.ugc.management.commons.ComponentEnum;
 import com.adobe.communities.ugc.management.commons.ComponentUserUgc;
-import com.adobe.communities.ugc.management.components.activitystreams.ActivityStreamsComponentUserUgc;
-import com.adobe.communities.ugc.management.components.calendar.CalendarCommentComponentUserUgc;
-import com.adobe.communities.ugc.management.components.calendar.CalendarEventComponentUserUgc;
-import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryDocumentComponentUserUgc;
-import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryFolderComponentUserUgc;
-import com.adobe.communities.ugc.management.components.ideation.IdeationCommentComponentUserUgc;
-import com.adobe.communities.ugc.management.components.ideation.IdeationIdeaComponentUserUgc;
-import com.adobe.communities.ugc.management.components.qna.QnaPostComponentUserUgc;
-import com.adobe.communities.ugc.management.components.qna.QnaTopicComponentUserUgc;
-import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
-import com.adobe.communities.ugc.management.components.tally.RatingComponentUserUgc;
-import com.adobe.communities.ugc.management.components.tally.VotingComponentUserUgc;
+import com.adobe.communities.ugc.management.components.calendar.CalendarCommentComponentUserUgcImpl;
+import com.adobe.communities.ugc.management.components.calendar.CalendarEventComponentUserUgcImpl;
+import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryDocumentComponentUserUgcImpl;
+import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryFolderComponentUserUgcImpl;
+import com.adobe.communities.ugc.management.components.ideation.IdeationCommentComponentUserUgcImpl;
+import com.adobe.communities.ugc.management.components.ideation.IdeationIdeaComponentUserUgcImpl;
+import com.adobe.communities.ugc.management.components.qna.QnaPostComponentUserUgcImpl;
+import com.adobe.communities.ugc.management.components.qna.QnaTopicComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.factory.UserUgcComponentFactory;
-import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
-import com.adobe.communities.ugc.management.components.blog.BlogEntryComponentUserUgc;
-import com.adobe.communities.ugc.management.components.forum.ForumCommentComponentUserUgc;
-import com.adobe.communities.ugc.management.components.forum.ForumEntryComponentUserUgc;
+import com.adobe.communities.ugc.management.components.blog.impl.BlogCommentComponentUserUgcImpl;
+import com.adobe.communities.ugc.management.components.blog.impl.BlogEntryComponentUserUgcImpl;
+import com.adobe.communities.ugc.management.components.forum.ForumCommentComponentUserUgcImpl;
+import com.adobe.communities.ugc.management.components.forum.ForumEntryComponentUserUgcImpl;
 import com.adobe.cq.social.calendar.client.endpoints.CalendarOperations;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.filelibrary.client.endpoints.FileLibraryOperations;
@@ -82,40 +78,40 @@ public class UserUgcComponentFactoryImpl implements UserUgcComponentFactory {
 
         switch(componentEnum){
             case BLOG_ENTRY:
-                componentUserUgc = new BlogEntryComponentUserUgc();
+                componentUserUgc = new BlogEntryComponentUserUgcImpl();
                 break;
             case BLOG_COMMENT:
-                componentUserUgc = new BlogCommentComponentUserUgc();
+                componentUserUgc = new BlogCommentComponentUserUgcImpl();
                 break;
             case FORUM_ENTRY:
-                componentUserUgc = new ForumEntryComponentUserUgc();
+                componentUserUgc = new ForumEntryComponentUserUgcImpl();
                 break;
             case FORUM_COMMENT:
-                componentUserUgc = new ForumCommentComponentUserUgc();
+                componentUserUgc = new ForumCommentComponentUserUgcImpl();
                 break;
             case CALENDAR_EVENT:
-                componentUserUgc = new CalendarEventComponentUserUgc();
+                componentUserUgc = new CalendarEventComponentUserUgcImpl();
                 break;
             case CALENDAR_COMMENT:
-                componentUserUgc = new CalendarCommentComponentUserUgc();
+                componentUserUgc = new CalendarCommentComponentUserUgcImpl();
                 break;
             case QNA_POST:
-                componentUserUgc = new QnaPostComponentUserUgc();
+                componentUserUgc = new QnaPostComponentUserUgcImpl();
                 break;
             case QNA_TOPIC:
-                componentUserUgc = new QnaTopicComponentUserUgc();
+                componentUserUgc = new QnaTopicComponentUserUgcImpl();
                 break;
             case FILE_LIBRARY_DOCUMENT:
-                componentUserUgc = new FileLibraryDocumentComponentUserUgc();
+                componentUserUgc = new FileLibraryDocumentComponentUserUgcImpl();
                 break;
             case FILE_LIBRARY_FOLDER:
-                componentUserUgc = new FileLibraryFolderComponentUserUgc();
+                componentUserUgc = new FileLibraryFolderComponentUserUgcImpl();
                 break;
             case IDEATION_COMMENT:
-                componentUserUgc = new IdeationCommentComponentUserUgc();
+                componentUserUgc = new IdeationCommentComponentUserUgcImpl();
                 break;
             case IDEATION_IDEA:
-                componentUserUgc = new IdeationIdeaComponentUserUgc();
+                componentUserUgc = new IdeationIdeaComponentUserUgcImpl();
                 break;
 //            case TALLY_LIKING:
 //                componentUserUgc = new LikingComponentUserUgc();

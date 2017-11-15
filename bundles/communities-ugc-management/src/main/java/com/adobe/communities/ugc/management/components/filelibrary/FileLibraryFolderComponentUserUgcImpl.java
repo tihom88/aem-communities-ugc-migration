@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class FileLibraryDocumentComponentUserUgc extends DefaultComponentUserUgc {
+public class FileLibraryFolderComponentUserUgcImpl extends DefaultComponentUserUgc {
 
     @Reference
     FileLibraryOperations fileLibraryOperations;
@@ -22,7 +22,7 @@ public class FileLibraryDocumentComponentUserUgc extends DefaultComponentUserUgc
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, FileLibrary.RESOURCE_TYPE_DOCUMENT);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, FileLibrary.RESOURCE_TYPE_FOLDER);
         return filters;
     }
 

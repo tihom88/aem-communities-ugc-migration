@@ -1,10 +1,10 @@
-package com.adobe.communities.ugc.management.components.filelibrary;
+package com.adobe.communities.ugc.management.components.qna;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.filelibrary.client.api.FileLibrary;
-import com.adobe.cq.social.filelibrary.client.endpoints.FileLibraryOperations;
+import com.adobe.cq.social.qna.client.api.QnaPost;
+import com.adobe.cq.social.qna.client.endpoints.QnaForumOperations;
 import com.adobe.cq.social.ugc.api.UgcFilter;
 import org.apache.felix.scr.annotations.Reference;
 
@@ -14,15 +14,15 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class FileLibraryFolderComponentUserUgc extends DefaultComponentUserUgc {
+public class QnaTopicComponentUserUgcImpl extends DefaultComponentUserUgc {
 
     @Reference
-    FileLibraryOperations fileLibraryOperations;
+    QnaForumOperations qnaForumOperations;
 
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, FileLibrary.RESOURCE_TYPE_FOLDER);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, QnaPost.RESOURCE_TYPE_TOPIC);
         return filters;
     }
 
@@ -32,7 +32,7 @@ public class FileLibraryFolderComponentUserUgc extends DefaultComponentUserUgc {
     }
 
     public CommentOperations getCommentOperations() {
-        return fileLibraryOperations;
+        return qnaForumOperations;
     }
 
     @Override

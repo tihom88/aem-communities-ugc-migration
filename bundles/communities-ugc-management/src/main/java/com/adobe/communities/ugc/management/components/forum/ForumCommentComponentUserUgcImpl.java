@@ -1,12 +1,12 @@
-package com.adobe.communities.ugc.management.components.tally;
+package com.adobe.communities.ugc.management.components.forum;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
-import com.adobe.communities.ugc.management.commons.DefaultSrpComponentUserUgc;
-import com.adobe.communities.ugc.management.commons.DefaultTallyComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.tally.client.api.RatingSocialComponent;
+import com.adobe.cq.social.forum.client.api.Forum;
+import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
 import com.adobe.cq.social.ugc.api.UgcFilter;
+import org.apache.felix.scr.annotations.Reference;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,18 +14,25 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class RatingComponentUserUgc extends DefaultTallyComponentUserUgc {
+public class ForumCommentComponentUserUgcImpl extends DefaultComponentUserUgc {
+
+    @Reference
+    ForumOperations forumOperations;
 
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, RatingSocialComponent.RATING_RESOURCE_TYPE);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, Forum.RESOURCE_TYPE_POST);
         return filters;
     }
 
     @Override
     public String getUserIdentifierKey() {
-        return Identifiers.USERIDENTIFIER;
+        return Identifiers.AUTHORIZABLE_ID;
+    }
+
+    public CommentOperations getCommentOperations() {
+        return forumOperations;
     }
 
     @Override

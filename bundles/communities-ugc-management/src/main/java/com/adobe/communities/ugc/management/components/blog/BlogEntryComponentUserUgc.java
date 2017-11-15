@@ -1,46 +1,10 @@
 package com.adobe.communities.ugc.management.components.blog;
 
-import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
-import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.journal.client.api.Journal;
-import com.adobe.cq.social.journal.client.endpoints.JournalOperations;
-import com.adobe.cq.social.ugc.api.UgcFilter;
-import org.apache.felix.scr.annotations.Component;
-import org.apache.felix.scr.annotations.Reference;
-import org.apache.felix.scr.annotations.Service;
-
-import java.util.HashMap;
-import java.util.Map;
+import com.adobe.communities.ugc.management.commons.ComponentUserUgc;
 
 /**
- * Created by mokatari on 10/13/17.
+ * Created by mokatari on 10/12/17.
  */
-@Component
-@Service
-public class BlogEntryComponentUserUgc extends DefaultComponentUserUgc {
+public interface BlogEntryComponentUserUgc extends ComponentUserUgc{
 
-    @Reference
-    JournalOperations journalOperations;
-
-    @Override
-    public Map<String, String> getComponentfilters() {
-        final Map<String, String> filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Journal.RESOURCE_TYPE_ENTRY);
-        return filters;
-    }
-
-    @Override
-    public String getUserIdentifierKey() {
-        return Identifiers.AUTHORIZABLE_ID;
-    }
-
-    public CommentOperations getCommentOperations() {
-        return journalOperations;
-    }
-
-    @Override
-    public UgcFilter getUgcFilter(String user) {
-        return super.getUgcFilter(user);
-    }
 }

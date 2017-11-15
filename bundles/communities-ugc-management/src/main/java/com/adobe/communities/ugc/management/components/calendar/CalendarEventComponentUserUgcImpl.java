@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class CalendarEventComponentUserUgc extends DefaultComponentUserUgc {
+public class CalendarEventComponentUserUgcImpl extends DefaultComponentUserUgc {
 
     @Reference
     CalendarOperations calendarOperations;

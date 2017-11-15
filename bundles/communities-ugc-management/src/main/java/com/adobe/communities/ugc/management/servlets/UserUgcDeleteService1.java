@@ -1,9 +1,7 @@
 package com.adobe.communities.ugc.management.servlets;
 
 import com.adobe.communities.ugc.management.commons.ComponentEnum;
-import com.adobe.communities.ugc.management.components.blog.BComponentUserUgc;
-import com.adobe.communities.ugc.management.factory.UserUgcComponentFactory;
-import com.adobe.communities.ugc.management.service.UserManagementService;
+import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
 import com.adobe.cq.social.scf.OperationException;
 import com.adobe.cq.social.srp.SocialResourceProvider;
 import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
@@ -47,7 +45,7 @@ public class UserUgcDeleteService1 extends SlingSafeMethodsServlet {
     private UgcSearch ugcSearch;
 
     @Reference
-    BComponentUserUgc bComponentUserUgc;
+    BlogCommentComponentUserUgc blogCommentComponentUserUgc;
 
     @Override
     protected void doGet(final SlingHttpServletRequest req,
@@ -63,7 +61,7 @@ public class UserUgcDeleteService1 extends SlingSafeMethodsServlet {
         resourceResolver.adaptTo(Session.class);
         List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
         try {
-            bComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            blogCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
         } catch (OperationException e) {
             throw new ServletException(e);
         }

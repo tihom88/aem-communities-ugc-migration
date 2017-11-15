@@ -1,7 +1,6 @@
 package com.adobe.communities.ugc.management.servlets;
 
-import com.adobe.communities.ugc.management.commons.ComponentEnum;
-import com.adobe.communities.ugc.management.components.blog.BComponentUserUgc;
+import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
 import com.adobe.communities.ugc.management.util.ZipCreator;
 import com.adobe.cq.social.srp.SocialResourceProvider;
 import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
@@ -26,7 +25,6 @@ import javax.jcr.Session;
 import javax.servlet.ServletException;
 import java.io.*;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.zip.ZipOutputStream;
 //import org.apache.sling.commons.json.JSONObject;
@@ -55,7 +53,7 @@ public class UserUgcFetchService1 extends SlingSafeMethodsServlet {
     private UgcSearch ugcSearch;
 
     @Reference
-    BComponentUserUgc blogCommentComponentUserUgc;
+    BlogCommentComponentUserUgc blogCommentComponentUserUgc;
 
     @Override
     protected void doGet(final SlingHttpServletRequest req,

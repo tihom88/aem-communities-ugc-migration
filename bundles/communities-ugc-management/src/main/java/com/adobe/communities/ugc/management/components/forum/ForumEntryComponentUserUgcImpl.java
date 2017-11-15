@@ -14,7 +14,7 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-public class ForumEntryComponentUserUgc extends DefaultComponentUserUgc {
+public class ForumEntryComponentUserUgcImpl extends DefaultComponentUserUgc {
 
     @Reference
     ForumOperations forumOperations;
