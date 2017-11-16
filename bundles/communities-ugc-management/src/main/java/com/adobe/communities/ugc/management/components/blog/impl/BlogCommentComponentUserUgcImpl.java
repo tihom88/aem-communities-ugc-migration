@@ -8,10 +8,17 @@ import com.adobe.communities.ugc.management.components.blog.BlogCommentComponent
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.journal.client.api.Journal;
 import com.adobe.cq.social.journal.client.endpoints.JournalOperations;
+import com.adobe.cq.social.scf.OperationException;
+import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
+import com.adobe.cq.social.ugc.api.SearchResults;
 import com.adobe.cq.social.ugc.api.UgcFilter;
+import com.adobe.cq.social.ugc.api.UgcSearch;
+import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +33,18 @@ public class BlogCommentComponentUserUgcImpl extends DefaultComponentUserUgc imp
 
     @Reference
     private JournalOperations journalOperations;
+
+    @Reference
+    private UgcSearch ugcSearch;
+
+    @Reference
+    private SocialResourceUtilities socialResourceUtilities;
+
+    @Activate
+    public void init() {
+        setUgcSearch(ugcSearch);
+        setSocialResourceUtilities(socialResourceUtilities);
+    }
 
     @Override
     public Map<String, String> getComponentfilters() {
@@ -47,4 +66,5 @@ public class BlogCommentComponentUserUgcImpl extends DefaultComponentUserUgc imp
     public UgcFilter getUgcFilter(String user) {
         return super.getUgcFilter(user);
     }
+
 }

@@ -1,6 +1,7 @@
 package com.adobe.communities.ugc.management.commons;
 
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.SrpOperations;
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.scf.OperationException;
 import com.adobe.cq.social.srp.SocialResourceProvider;
@@ -10,6 +11,7 @@ import com.adobe.cq.social.ugc.api.*;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 
@@ -20,14 +22,10 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/12/17.
  */
-@Component
-@Service
-public abstract class DefaultComponentUserUgc implements ComponentUserUgc {
 
-    @Reference
-    UgcSearch ugcSearch;
+public abstract class DefaultComponentUserUgc {
 
-    @Reference
+    private UgcSearch ugcSearch;
     private SocialResourceUtilities socialResourceUtilities;
 
     public abstract Map<String, String> getComponentfilters();
@@ -35,6 +33,14 @@ public abstract class DefaultComponentUserUgc implements ComponentUserUgc {
     public abstract String getUserIdentifierKey();
 
     public abstract DeleteOperation getOperations();
+
+    public void setUgcSearch(UgcSearch ugcSearch) {
+        this.ugcSearch = ugcSearch;
+    }
+
+    public void setSocialResourceUtilities(SocialResourceUtilities socialResourceUtilities) {
+        this.socialResourceUtilities = socialResourceUtilities;
+    }
 
     public UgcFilter getUgcFilter(String user) {
 
@@ -68,7 +74,7 @@ public abstract class DefaultComponentUserUgc implements ComponentUserUgc {
         return results;
     }
 
-    public boolean deleteUserUgc(ResourceResolver resourceResolver, String userId) throws OperationException {
+    public boolean deleteUserUgc(ResourceResolver resourceResolver, String userId)  throws OperationException {
 
         SearchResults<Resource> searchResults = getUserUgc(resourceResolver, userId);
         final Session session = resourceResolver.adaptTo(Session.class);
@@ -85,10 +91,11 @@ public abstract class DefaultComponentUserUgc implements ComponentUserUgc {
                 boolean isUgcPresent = srp.getResource(resourceResolver, resource.getPath()) != null ? true : false;
                 if (isUgcPresent) {
                     getOperations().delete(resourceResolver, resource, session);
-                    session.save();
+                    resourceResolver.commit();
+//                    session.save();
                 }
             }
-        } catch (RepositoryException e) {
+        } catch (PersistenceException e){
             throw new OperationException(e, 0);
         }
 

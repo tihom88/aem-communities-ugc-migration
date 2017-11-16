@@ -1,6 +1,22 @@
 package com.adobe.communities.ugc.management.servlets;
 
+import com.adobe.communities.ugc.management.commons.ComponentEnum;
+import com.adobe.communities.ugc.management.components.activitystreams.ActivityStreamsComponentUserUgc;
 import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
+import com.adobe.communities.ugc.management.components.blog.BlogEntryComponentUserUgc;
+import com.adobe.communities.ugc.management.components.calendar.CalendarCommentComponentUserUgc;
+import com.adobe.communities.ugc.management.components.calendar.CalendarEventComponentUserUgc;
+import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryDocumentComponentUserUgc;
+import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryFolderComponentUserUgc;
+import com.adobe.communities.ugc.management.components.forum.ForumCommentComponentUserUgc;
+import com.adobe.communities.ugc.management.components.forum.ForumEntryComponentUserUgc;
+import com.adobe.communities.ugc.management.components.ideation.IdeationCommentComponentUserUgc;
+import com.adobe.communities.ugc.management.components.ideation.IdeationIdeaComponentUserUgc;
+import com.adobe.communities.ugc.management.components.qna.QnaPostComponentUserUgc;
+import com.adobe.communities.ugc.management.components.qna.QnaTopicComponentUserUgc;
+import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
+import com.adobe.communities.ugc.management.components.tally.RatingComponentUserUgc;
+import com.adobe.communities.ugc.management.components.tally.VotingComponentUserUgc;
 import com.adobe.communities.ugc.management.util.ZipCreator;
 import com.adobe.cq.social.srp.SocialResourceProvider;
 import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
@@ -24,7 +40,9 @@ import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 import javax.servlet.ServletException;
 import java.io.*;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.zip.ZipOutputStream;
 //import org.apache.sling.commons.json.JSONObject;
@@ -53,7 +71,39 @@ public class UserUgcFetchService1 extends SlingSafeMethodsServlet {
     private UgcSearch ugcSearch;
 
     @Reference
+    ActivityStreamsComponentUserUgc activityStreamsComponentUserUgc;
+    @Reference
     BlogCommentComponentUserUgc blogCommentComponentUserUgc;
+    @Reference
+    BlogEntryComponentUserUgc blogEntryComponentUserUgc;
+    @Reference
+    CalendarEventComponentUserUgc calendarEventComponentUserUgc;
+    @Reference
+    CalendarCommentComponentUserUgc calendarCommentComponentUserUgc;
+    @Reference
+    FileLibraryFolderComponentUserUgc fileLibraryFolderComponentUserUgc;
+    @Reference
+    FileLibraryDocumentComponentUserUgc fileLibraryDocumentComponentUserUgc;
+    @Reference
+    ForumEntryComponentUserUgc forumEntryComponentUserUgc;
+    @Reference
+    ForumCommentComponentUserUgc forumCommentComponentUserUgc;
+    @Reference
+    IdeationCommentComponentUserUgc ideationCommentComponentUserUgc;
+    @Reference
+    IdeationIdeaComponentUserUgc ideationIdeaComponentUserUgc;
+    @Reference
+    QnaPostComponentUserUgc qnaPostComponentUserUgc;
+    @Reference
+    QnaTopicComponentUserUgc qnaTopicComponentUserUgc;
+    @Reference
+    LikingComponentUserUgc likingComponentUserUgc;
+    @Reference
+    RatingComponentUserUgc ratingComponentUserUgc;
+    @Reference
+    VotingComponentUserUgc votingComponentUserUgc;
+
+
 
     @Override
     protected void doGet(final SlingHttpServletRequest req,
@@ -67,7 +117,25 @@ public class UserUgcFetchService1 extends SlingSafeMethodsServlet {
         srp.setConfig(storageConfig);
 
 
-        SearchResults<Resource> res = blogCommentComponentUserUgc.getUserUgc(resourceResolver,user);
+        List<SearchResults<Resource>> resultsList = new ArrayList<SearchResults<Resource>>();
+
+        resultsList.add(blogEntryComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(blogCommentComponentUserUgc.getUserUgc(resourceResolver,user));
+        resultsList.add(activityStreamsComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(calendarEventComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(calendarCommentComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(fileLibraryFolderComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(fileLibraryDocumentComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(forumEntryComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(forumCommentComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(ideationIdeaComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(ideationCommentComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(qnaTopicComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(qnaPostComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(likingComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(ratingComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(votingComponentUserUgc.getUserUgc(resourceResolver, user));
+
 
 //        List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
 //        Map<ComponentEnum, SearchResults<Resource>> resultsList = userManagementService.getUserUgc(resourceResolver, componentEnumList, user);
@@ -87,7 +155,7 @@ public class UserUgcFetchService1 extends SlingSafeMethodsServlet {
 //        resp.setHeader(headerKey, headerValue);
 
         String userUgcJson = null;
-        userUgcJson = createJsonResponse(res);
+        userUgcJson = createJsonResponse(resultsList);
 //        createZip(req, resp, userUgcJson, attachmentPaths);
         resp.getOutputStream().println(userUgcJson.toString());
     }
@@ -159,6 +227,38 @@ public class UserUgcFetchService1 extends SlingSafeMethodsServlet {
                     isEmpty = false;
                 }
 
+        } catch (RepositoryException e) {
+            throw new ServletException(e);
+        } catch (JSONException e) {
+            throw new ServletException(e);
+        }
+        if (!isEmpty) {
+            response.setLength(response.length() - 1);
+        }
+        response.append("]");
+        return response.toString();
+    }
+
+    private String createJsonResponse(List<SearchResults<Resource>> resultsList) throws ServletException {
+        StringBuilder response = new StringBuilder();
+
+        boolean isEmpty = true;
+        response.append("[");
+        final JsonItemWriter jsonWriter = new JsonItemWriter(null);
+        try {
+            for (SearchResults<Resource> results : resultsList) {
+                for (Resource result : results.getResults()) {
+                    Node node = null;
+                    final StringWriter stringWriter = new StringWriter();
+
+                    node = result.getResourceResolver().adaptTo(Session.class).getNode(result.getPath());
+
+                    // max recursion level set to 0 to get info of current node itself
+                    jsonWriter.dump(node, stringWriter, 0);
+                    response.append(stringWriter.toString() + ",");
+                    isEmpty = false;
+                }
+            }
         } catch (RepositoryException e) {
             throw new ServletException(e);
         } catch (JSONException e) {

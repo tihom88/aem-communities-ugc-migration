@@ -8,7 +8,10 @@ import com.adobe.communities.ugc.management.components.forum.ForumEntryComponent
 import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.forum.client.api.Forum;
 import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
+import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcFilter;
+import com.adobe.cq.social.ugc.api.UgcSearch;
+import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
@@ -25,6 +28,18 @@ public class ForumEntryComponentUserUgcImpl extends DefaultComponentUserUgc impl
 
     @Reference
     ForumOperations forumOperations;
+
+    @Reference
+    private UgcSearch ugcSearch;
+
+    @Reference
+    private SocialResourceUtilities socialResourceUtilities;
+
+    @Activate
+    public void init() {
+        setUgcSearch(ugcSearch);
+        setSocialResourceUtilities(socialResourceUtilities);
+    }
 
     @Override
     public Map<String, String> getComponentfilters() {

@@ -7,7 +7,10 @@ import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperat
 import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryDocumentComponentUserUgc;
 import com.adobe.cq.social.filelibrary.client.api.FileLibrary;
 import com.adobe.cq.social.filelibrary.client.endpoints.FileLibraryOperations;
+import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcFilter;
+import com.adobe.cq.social.ugc.api.UgcSearch;
+import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
@@ -25,6 +28,18 @@ public class FileLibraryDocumentComponentUserUgcImpl extends DefaultComponentUse
 
     @Reference
     FileLibraryOperations fileLibraryOperations;
+
+    @Reference
+    private UgcSearch ugcSearch;
+
+    @Reference
+    private SocialResourceUtilities socialResourceUtilities;
+
+    @Activate
+    public void init() {
+        setUgcSearch(ugcSearch);
+        setSocialResourceUtilities(socialResourceUtilities);
+    }
 
     @Override
     public Map<String, String> getComponentfilters() {

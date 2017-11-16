@@ -16,6 +16,7 @@ import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.SearchResults;
 import com.adobe.cq.social.ugc.api.UgcFilter;
 import com.adobe.cq.social.ugc.api.UgcSearch;
+import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
@@ -37,13 +38,19 @@ import java.util.Map;
 public class ActivityStreamsComponentUserUgcImpl extends DefaultComponentUserUgc implements ActivityStreamsComponentUserUgc {
 
     @Reference
-    UgcSearch ugcSearch;
+    private UgcSearch ugcSearch;
 
     @Reference
-    SrpOperations srpOperations;
+    private SrpOperations srpOperations;
 
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
+
+    @Activate
+    public void init() {
+        setUgcSearch(ugcSearch);
+        setSocialResourceUtilities(socialResourceUtilities);
+    }
 
     @Override
     public Map<String, String> getComponentfilters() {
@@ -65,8 +72,5 @@ public class ActivityStreamsComponentUserUgcImpl extends DefaultComponentUserUgc
     public UgcFilter getUgcFilter(String user) {
         return super.getUgcFilter(user);
     }
-
-
-
 
 }

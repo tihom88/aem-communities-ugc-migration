@@ -7,10 +7,17 @@ import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperat
 import com.adobe.communities.ugc.management.components.calendar.CalendarCommentComponentUserUgc;
 import com.adobe.cq.social.calendar.client.api.Calendar;
 import com.adobe.cq.social.calendar.client.endpoints.CalendarOperations;
+import com.adobe.cq.social.scf.OperationException;
+import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
+import com.adobe.cq.social.ugc.api.SearchResults;
 import com.adobe.cq.social.ugc.api.UgcFilter;
+import com.adobe.cq.social.ugc.api.UgcSearch;
+import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.apache.sling.api.resource.Resource;
+import org.apache.sling.api.resource.ResourceResolver;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -25,6 +32,18 @@ public class CalendarCommentComponentUserUgcImpl extends DefaultComponentUserUgc
 
     @Reference
     CalendarOperations calendarOperations;
+
+    @Reference
+    private UgcSearch ugcSearch;
+
+    @Reference
+    private SocialResourceUtilities socialResourceUtilities;
+
+    @Activate
+    public void init() {
+        setUgcSearch(ugcSearch);
+        setSocialResourceUtilities(socialResourceUtilities);
+    }
 
     @Override
     public Map<String, String> getComponentfilters() {
@@ -46,4 +65,6 @@ public class CalendarCommentComponentUserUgcImpl extends DefaultComponentUserUgc
     public UgcFilter getUgcFilter(String user) {
         return super.getUgcFilter(user);
     }
+
+
 }

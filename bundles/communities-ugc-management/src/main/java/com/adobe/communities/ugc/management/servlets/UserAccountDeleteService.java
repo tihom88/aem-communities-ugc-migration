@@ -64,7 +64,7 @@ public class UserAccountDeleteService extends SlingSafeMethodsServlet {
         List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
         try {
             userManagementService.deleteUserUgc(resourceResolver,componentEnumList, user);
-            userManagementService.deleteUserAccount(resourceResolver,user);
+            userManagementService. deleteUserAccount(resourceResolver,user);
         }catch (RepositoryException e) {
             throw new ServletException(e);
         } catch (OperationException e) {
