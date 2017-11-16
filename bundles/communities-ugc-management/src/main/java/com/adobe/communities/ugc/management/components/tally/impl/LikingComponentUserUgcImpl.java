@@ -53,7 +53,7 @@ public class LikingComponentUserUgcImpl extends DefaultComponentUserUgc implemen
     }
 
     public DeleteOperation getOperations() {
-        return new TallyDeleteOperation(tallyOperationsService);
+        return new TallyDeleteOperation(tallyOperationsService, TallyOperationsService.LIKING);
     }
 
     @Override

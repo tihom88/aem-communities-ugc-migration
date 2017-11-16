@@ -13,11 +13,13 @@ import javax.jcr.Session;
 public class TallyDeleteOperation implements DeleteOperation<TallyComponentUserUgc> {
 
     TallyOperationsService tallyOperationsService;
+    String tallyType;
 
-    public TallyDeleteOperation(TallyOperationsService tallyOperationsService){
+    public TallyDeleteOperation(TallyOperationsService tallyOperationsService, String tallyType){
         this.tallyOperationsService = tallyOperationsService;
+        this.tallyType = tallyType;
     }
     public void delete(ResourceResolver resourceResolver, Resource resource, Session session) throws OperationException {
-        tallyOperationsService.removeCurrentUserResponse(resource, resource.getPath());
+        tallyOperationsService.removeCurrentUserResponse(resource.getParent(), this.tallyType);
     }
 }

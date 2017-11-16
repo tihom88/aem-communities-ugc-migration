@@ -53,7 +53,7 @@ public class RatingComponentUserUgcImpl extends DefaultComponentUserUgc implemen
     }
 
     public DeleteOperation getOperations() {
-        return new TallyDeleteOperation(tallyOperationsService);
+        return new TallyDeleteOperation(tallyOperationsService, TallyOperationsService.RATING);
     }
 
     @Override

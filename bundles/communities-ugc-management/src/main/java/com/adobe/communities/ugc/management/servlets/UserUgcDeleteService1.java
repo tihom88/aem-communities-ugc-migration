@@ -108,8 +108,7 @@ public class UserUgcDeleteService1 extends SlingSafeMethodsServlet {
         List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
         try {
             blogEntryComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            blogCommentComponentUserUgc.deleteUserUgc(resourceResolver,user);
-            activityStreamsComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            blogCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
             calendarEventComponentUserUgc.deleteUserUgc(resourceResolver, user);
             calendarCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
             fileLibraryFolderComponentUserUgc.deleteUserUgc(resourceResolver, user);
@@ -124,10 +123,15 @@ public class UserUgcDeleteService1 extends SlingSafeMethodsServlet {
             ratingComponentUserUgc.deleteUserUgc(resourceResolver, user);
             votingComponentUserUgc.deleteUserUgc(resourceResolver, user);
 
+            /*
+                Activity stream should be last as these are created even for deletion of data/nodes
+            */
+            activityStreamsComponentUserUgc.deleteUserUgc(resourceResolver, user);
+
         } catch (OperationException e) {
             throw new ServletException(e);
         }
-        resp.getOutputStream().println("UGC for user"+user+ " deleted");
+        resp.getOutputStream().println("UGC for user" + user + " deleted");
     }
 
     private String createJsonResponse(SearchResults<Resource> results) {

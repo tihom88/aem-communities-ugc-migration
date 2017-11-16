@@ -53,7 +53,7 @@ public class VotingComponentUserUgcImpl extends DefaultComponentUserUgc implemen
     }
 
     public DeleteOperation getOperations() {
-        return new TallyDeleteOperation(tallyOperationsService);
+        return new TallyDeleteOperation(tallyOperationsService, TallyOperationsService.VOTING);
     }
 
     @Override
