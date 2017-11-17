@@ -12,6 +12,7 @@ import com.adobe.communities.ugc.management.components.forum.ForumCommentCompone
 import com.adobe.communities.ugc.management.components.forum.ForumEntryComponentUserUgc;
 import com.adobe.communities.ugc.management.components.ideation.IdeationCommentComponentUserUgc;
 import com.adobe.communities.ugc.management.components.ideation.IdeationIdeaComponentUserUgc;
+import com.adobe.communities.ugc.management.components.notification.NotificationComponentUserUgc;
 import com.adobe.communities.ugc.management.components.qna.QnaPostComponentUserUgc;
 import com.adobe.communities.ugc.management.components.qna.QnaTopicComponentUserUgc;
 import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
@@ -91,6 +92,8 @@ public class UserUgcDeleteService1 extends SlingSafeMethodsServlet {
     RatingComponentUserUgc ratingComponentUserUgc;
     @Reference
     VotingComponentUserUgc votingComponentUserUgc;
+    @Reference
+    NotificationComponentUserUgc notificationComponentUserUgc;
 
 
     @Override
@@ -122,6 +125,7 @@ public class UserUgcDeleteService1 extends SlingSafeMethodsServlet {
             likingComponentUserUgc.deleteUserUgc(resourceResolver, user);
             ratingComponentUserUgc.deleteUserUgc(resourceResolver, user);
             votingComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            notificationComponentUserUgc.deleteUserUgc(resourceResolver, user);
 
             /*
                 Activity stream should be last as these are created even for deletion of data/nodes
