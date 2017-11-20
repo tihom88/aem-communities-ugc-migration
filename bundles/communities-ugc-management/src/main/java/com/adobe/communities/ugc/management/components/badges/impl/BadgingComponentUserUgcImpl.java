@@ -21,15 +21,15 @@ import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
-import org.apache.sling.api.resource.LoginException;
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.api.resource.ResourceResolverFactory;
+import org.apache.jackrabbit.api.security.user.Authorizable;
+import org.apache.jackrabbit.api.security.user.UserManager;
+import org.apache.sling.api.resource.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.annotation.Nonnull;
 import javax.jcr.RepositoryException;
+import javax.jcr.Session;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
@@ -64,6 +64,7 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
 
     private static final String USER_PROFILE_READER = "communities-user-admin";
     private static final String DEFAULT_USER_ROOT = "/home/users/";
+    private static final String PROFILE_BADGES_PATH = "profile/badges";
 
 //    @Reference
 //    SocialUtils socialUtils;
@@ -104,40 +105,35 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
         return srp;
     }
 
+
+
+
+
+
+
     // something like asipath/user/home/userid/profile/badge/
-    private String getBadgeUserRootPath(@Nonnull final SocialResourceProvider srp, @Nonnull final String userId)
+    private String getBadgeUserRootPath(ResourceResolver resourceResolver, @Nonnull final SocialResourceProvider srp, @Nonnull final String userId)
             throws RepositoryException {
 
-        String homeRoot = null;
-        ResourceResolver serviceUserReaderResolver = null;
+        Session session = resourceResolver.adaptTo(Session.class);
 
+        UserManager userManager = resourceResolver.adaptTo(UserManager.class);
+        boolean revertToAutoSave = false;
+        String userProfilePath;
         try {
-            // Use service user to locate the badge path, but ability to read the badges will depend on the resolver
-            // doing the reading.
-            serviceUserReaderResolver =
-                    serviceUserWrapper.getServiceResourceResolver(rrf,
-                            Collections.singletonMap(ResourceResolverFactory.SUBSERVICE, (Object) USER_PROFILE_READER));
-
-            final UserProperties userProps = SocialResourceUtils.getUserProperties(serviceUserReaderResolver, userId);
-            if (userProps != null) {
-                final Resource userResource = userProps.getResource("");
-                homeRoot = socialResourceUtilities.resourceToUGCStoragePath(userResource) + "/";
-            }
-        } catch (final RepositoryException e) {
-            LOG.error("Error retrieving user properties for {}.", userId, e);
-        } catch (final LoginException le) {
-            LOG.error("Error retrieving user properties for {}.", userId, le);
-        } finally {
-            if (serviceUserReaderResolver != null) {
-                serviceUserReaderResolver.close();
-            }
+            Authorizable authorizable = userManager.getAuthorizable(userId);
+            userProfilePath = authorizable.getPath();
+        } catch (RepositoryException e) {
+            throw new RepositoryException(e);
         }
 
-        if (homeRoot == null) {
-            homeRoot = srp.getASIPath() + DEFAULT_USER_ROOT + userId + "/";
+        if (userProfilePath == null) {
+//            userProfilePath = srp.getASIPath() + DEFAULT_USER_ROOT + userId + "/";
+            throw new RuntimeException("Unable to find user: "+userId);
         }
+        userProfilePath = srp.getASIPath() + userProfilePath + "/"+ PROFILE_BADGES_PATH;
 
-        return homeRoot + BadgingService.BADGING_FOLDER_NAME;
+        return userProfilePath;
     }
 
     @Override
@@ -149,7 +145,7 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
         final SocialResourceProvider srp = getSRP(resourceResolver);
         final String badgePath;
         try {
-            badgePath = getBadgeUserRootPath(srp, userId);
+            badgePath = getBadgeUserRootPath(resourceResolver,srp, userId);
         } catch (RepositoryException e) {
             throw new RuntimeException(e);
         }
@@ -162,17 +158,21 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
                     Operator.Or));
         }
 
-        ugcShowcaseFilter.addConstraint(new PathConstraint(badgePath,
-                PathConstraintType.IsDescendantNode));
+
+
+        ConstraintGroup pathConstaint = new ConstraintGroup(Operator.And);
+        pathConstaint.addConstraint(new PathConstraint(badgePath, PathConstraintType.IsDescendantNode));
+
 
 //        ConstraintGroup userGroup = new ConstraintGroup(Operator.And);
 //        String userIdentifierKey = getUserIdentifierKey();
 //        userGroup.addConstraint(new ValueConstraint<String>(userIdentifierKey, userId, ComparisonType.Equals,
 //                Operator.Or));
-        ConstraintGroup andcons = new ConstraintGroup(Operator.Or); // doesn't matter
+        ConstraintGroup andcons = new ConstraintGroup(Operator.And); // doesn't matter
         andcons.addConstraint(resourceGroupConstraint);
       //  andcons.addConstraint(userGroup);
         ugcShowcaseFilter.and(andcons);
+        ugcShowcaseFilter.and(pathConstaint);
         return ugcShowcaseFilter;
     }
 

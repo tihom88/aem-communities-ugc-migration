@@ -149,9 +149,9 @@ public class UserUgcFetchService1 extends SlingSafeMethodsServlet {
 //        resultsList.add(votingComponentUserUgc.getUserUgc(resourceResolver, user));
 //        resultsList.add(notificationComponentUserUgc.getUserUgc(resourceResolver, user));
 
-        resultsList.add(messageComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(scoringComponentUserUgc.getUserUgc(resourceResolver, user));
-   //     resultsList.add(badgingComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(messageComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(scoringComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(badgingComponentUserUgc.getUserUgc(resourceResolver, user));
 
 
 
