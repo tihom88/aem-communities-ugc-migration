@@ -131,26 +131,26 @@ public class UserUgcFetchService1 extends SlingSafeMethodsServlet {
 
         List<SearchResults<Resource>> resultsList = new ArrayList<SearchResults<Resource>>();
 
-//        resultsList.add(blogEntryComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(blogCommentComponentUserUgc.getUserUgc(resourceResolver,user));
-//        resultsList.add(activityStreamsComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(calendarEventComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(calendarCommentComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(fileLibraryFolderComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(fileLibraryDocumentComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(forumEntryComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(forumCommentComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(ideationIdeaComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(ideationCommentComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(qnaTopicComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(qnaPostComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(likingComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(ratingComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(votingComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(notificationComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(blogEntryComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(blogCommentComponentUserUgc.getUserUgc(resourceResolver,user));
+        resultsList.add(activityStreamsComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(calendarEventComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(calendarCommentComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(fileLibraryFolderComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(fileLibraryDocumentComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(forumEntryComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(forumCommentComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(ideationIdeaComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(ideationCommentComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(qnaTopicComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(qnaPostComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(likingComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(ratingComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(votingComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(notificationComponentUserUgc.getUserUgc(resourceResolver, user));
 
-//        resultsList.add(messageComponentUserUgc.getUserUgc(resourceResolver, user));
-//        resultsList.add(scoringComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(messageComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(scoringComponentUserUgc.getUserUgc(resourceResolver, user));
         resultsList.add(badgingComponentUserUgc.getUserUgc(resourceResolver, user));
 
 

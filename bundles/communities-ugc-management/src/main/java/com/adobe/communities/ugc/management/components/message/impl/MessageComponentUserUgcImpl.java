@@ -4,6 +4,8 @@ import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.communities.ugc.management.commons.deleteoperation.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.SrpDeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.SrpOperations;
 import com.adobe.communities.ugc.management.components.message.MessageComponentUserUgc;
 import com.adobe.cq.social.messaging.client.api.MessageSocialComponent;
 import com.adobe.cq.social.messaging.client.endpoints.MessagingOperations;
@@ -34,6 +36,9 @@ public class MessageComponentUserUgcImpl extends DefaultComponentUserUgc impleme
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
 
+    @Reference
+    private SrpOperations srpOperations;
+
     @Activate
     public void init() {
         setUgcSearch(ugcSearch);
@@ -53,7 +58,7 @@ public class MessageComponentUserUgcImpl extends DefaultComponentUserUgc impleme
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(messagingOperations);
+        return new SrpDeleteOperation(srpOperations);
     }
 
 

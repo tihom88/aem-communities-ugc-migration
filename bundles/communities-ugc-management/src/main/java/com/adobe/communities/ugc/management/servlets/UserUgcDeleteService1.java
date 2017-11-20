@@ -119,25 +119,25 @@ public class UserUgcDeleteService1 extends SlingSafeMethodsServlet {
         resourceResolver.adaptTo(Session.class);
         List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
         try {
-//            blogEntryComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            blogCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            calendarEventComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            calendarCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            fileLibraryFolderComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            fileLibraryDocumentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            forumEntryComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            forumCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            ideationIdeaComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            ideationCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            qnaTopicComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            qnaPostComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            blogEntryComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            blogCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            calendarEventComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            calendarCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            fileLibraryFolderComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            fileLibraryDocumentComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            forumEntryComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            forumCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            ideationIdeaComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            ideationCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            qnaTopicComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            qnaPostComponentUserUgc.deleteUserUgc(resourceResolver, user);
 //            likingComponentUserUgc.deleteUserUgc(resourceResolver, user);
 //            ratingComponentUserUgc.deleteUserUgc(resourceResolver, user);
 //            votingComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            notificationComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            notificationComponentUserUgc.deleteUserUgc(resourceResolver, user);
 
-//            messageComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            scoringComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            messageComponentUserUgc.deleteUserUgc(resourceResolver, user);
+            scoringComponentUserUgc.deleteUserUgc(resourceResolver, user);
             badgingComponentUserUgc.deleteUserUgc(resourceResolver, user);
 
 
