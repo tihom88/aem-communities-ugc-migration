@@ -1,6 +1,6 @@
-package com.adobe.communities.ugc.management.service.impl;
+package com.adobe.communities.ugc.management.account.impl;
 
-import com.adobe.communities.ugc.management.service.UserManagementService;
+import com.adobe.communities.ugc.management.account.UserAccountDeletionService;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Component;
@@ -21,8 +21,8 @@ import javax.jcr.Session;
  */
 @Component
 @Service
-public class UserManagementServiceImpl implements UserManagementService {
-    private static final Logger log = LoggerFactory.getLogger(UserManagementServiceImpl.class);
+public class UserAccountDeletionServiceImpl implements UserAccountDeletionService {
+    private static final Logger log = LoggerFactory.getLogger(UserAccountDeletionServiceImpl.class);
 
     @Reference
     UgcSearch ugcSearch;

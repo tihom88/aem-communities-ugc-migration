@@ -20,7 +20,7 @@ import com.adobe.communities.ugc.management.components.scoring.ScoringComponentU
 import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.tally.RatingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.tally.VotingComponentUserUgc;
-import com.adobe.communities.ugc.management.service.UserManagementService;
+import com.adobe.communities.ugc.management.account.UserAccountDeletionService;
 import com.adobe.cq.social.scf.OperationException;
 import com.adobe.cq.social.srp.SocialResourceProvider;
 import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
@@ -60,7 +60,7 @@ public class UserAccountDeleteService extends SlingSafeMethodsServlet {
     private UgcSearch ugcSearch;
 
     @Reference
-    UserManagementService userManagementService;
+    UserAccountDeletionService userAccountDeletionService;
 
     @Reference
     ActivityStreamsComponentUserUgc activityStreamsComponentUserUgc;
@@ -116,7 +116,7 @@ public class UserAccountDeleteService extends SlingSafeMethodsServlet {
         srp.setConfig(storageConfig);
         try {
             deleteUserUgc(resourceResolver, user);
-            userManagementService. deleteUserAccount(resourceResolver,user);
+            userAccountDeletionService. deleteUserAccount(resourceResolver,user);
         }catch (RepositoryException e) {
             throw new ServletException(e);
         }

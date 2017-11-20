@@ -143,7 +143,7 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
         }
         return results;
     }
-    
+
     @Override
     public String getUserIdentifierKey() {
         return null;
