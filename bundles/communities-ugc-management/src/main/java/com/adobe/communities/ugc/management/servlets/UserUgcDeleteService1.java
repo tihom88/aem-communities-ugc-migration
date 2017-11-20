@@ -119,33 +119,7 @@ public class UserUgcDeleteService1 extends SlingSafeMethodsServlet {
         resourceResolver.adaptTo(Session.class);
         List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
         try {
-            blogEntryComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            blogCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            calendarEventComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            calendarCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            fileLibraryFolderComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            fileLibraryDocumentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            forumEntryComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            forumCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            ideationIdeaComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            ideationCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            qnaTopicComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            qnaPostComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            likingComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            ratingComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            votingComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            notificationComponentUserUgc.deleteUserUgc(resourceResolver, user);
-
-            messageComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            scoringComponentUserUgc.deleteUserUgc(resourceResolver, user);
-            badgingComponentUserUgc.deleteUserUgc(resourceResolver, user);
-
-
-            /*
-                Activity stream should be last as these are created even for deletion of data/nodes
-            */
-            activityStreamsComponentUserUgc.deleteUserUgc(resourceResolver, user);
-
+            deleteUserUgc(resourceResolver, user);
         } catch (OperationException e) {
             throw new ServletException(e);
         }
@@ -163,6 +137,36 @@ public class UserUgcDeleteService1 extends SlingSafeMethodsServlet {
         }
         response.append("]");
         return response.toString();
+    }
+
+    public void deleteUserUgc(ResourceResolver resourceResolver, String user) throws OperationException {
+        blogEntryComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        blogCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        calendarEventComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        calendarCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        fileLibraryFolderComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        fileLibraryDocumentComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        forumEntryComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        forumCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        ideationIdeaComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        ideationCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        qnaTopicComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        qnaPostComponentUserUgc.deleteUserUgc(resourceResolver, user);
+//            likingComponentUserUgc.deleteUserUgc(resourceResolver, user);
+//            ratingComponentUserUgc.deleteUserUgc(resourceResolver, user);
+//            votingComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        notificationComponentUserUgc.deleteUserUgc(resourceResolver, user);
+
+        messageComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        scoringComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        badgingComponentUserUgc.deleteUserUgc(resourceResolver, user);
+
+
+            /*
+                Activity stream should be last as these are created even for deletion of data/nodes
+            */
+        activityStreamsComponentUserUgc.deleteUserUgc(resourceResolver, user);
+
     }
 
 }

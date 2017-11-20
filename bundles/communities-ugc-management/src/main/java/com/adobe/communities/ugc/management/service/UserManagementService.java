@@ -16,10 +16,6 @@ import java.util.Map;
  */
 public interface UserManagementService {
 
-    Map<ComponentEnum, SearchResults<Resource>> getUserUgc(ResourceResolver resourceResolver, List<ComponentEnum> componentEnumList, String userId);
-
-    boolean deleteUserUgc(ResourceResolver resourceResolver, List<ComponentEnum> componentEnumList, String userId) throws OperationException;
-
     boolean deleteUserAccount(ResourceResolver resourceResolver, String userId) throws RepositoryException;
 
 }

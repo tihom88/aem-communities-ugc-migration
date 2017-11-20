@@ -47,71 +47,6 @@ public class UserManagementServiceImpl implements UserManagementService {
     @Reference
     private JournalOperations journalOperations;
 
-    public Map<ComponentEnum, SearchResults<Resource>> getUserUgc(ResourceResolver resourceResolver, List<ComponentEnum> componentEnumList, String userId) {
-
-        Map<ComponentEnum, UgcFilter> ugcFilterList = getUserUgcFilters(componentEnumList, userId);
-        Map<ComponentEnum, SearchResults<Resource>> resultsList = new HashMap<ComponentEnum, SearchResults<Resource>>();
-        try {
-            for (Map.Entry<ComponentEnum, UgcFilter> entry : ugcFilterList.entrySet()) {
-                // Max value need to be checked (MAX_VALUE can't be used, throwing out of range error )
-                SearchResults<Resource> results = ugcSearch.find(null, resourceResolver, entry.getValue(), 0, 100000, false);
-                resultsList.put(entry.getKey(), results);
-            }
-        } catch (RepositoryException e) {
-            e.printStackTrace();
-        }
-        return resultsList;
-    }
-
-    public boolean deleteUserUgc(ResourceResolver resourceResolver, List<ComponentEnum> componentEnumList, String userId) throws OperationException {
-
-        Map<ComponentEnum, SearchResults<Resource>> searchResults = getUserUgc(resourceResolver, componentEnumList, userId);
-
-        final Session session = resourceResolver.adaptTo(Session.class);
-        for (Map.Entry<ComponentEnum, SearchResults<Resource>> entry : searchResults.entrySet()) {
-            deleteResources(resourceResolver, entry.getKey(), entry.getValue(), session);
-            /*switch (entry.getKey()){
-                case BLOG_COMMENT:
-                    deleteResources(ComponentEnum.BLOG_COMMENT, entry.getValue(), session);
-                    break;
-                case BLOG_ENTRY:
-                    deleteResources(ComponentEnum.BLOG_ENTRY, entry.getValue(), session);
-                    break;
-                default:
-                    throw new RuntimeException("ComponentEnum not defined for fetching userContent");
-            }*/
-
-
-        }
-        return true;
-    }
-
-    private void deleteResources(ResourceResolver resourceResolver, ComponentEnum componentEnum, SearchResults<Resource> resources, Session session) throws OperationException {
-        try {
-
-            for (Resource resource : resources.getResults()) {
-                final SocialResourceConfiguration storageConfig = socialResourceUtilities.getStorageConfig(resource); //socialUtils.getStorageConfig(resource);
-                final SocialResourceProvider srp = socialResourceUtilities.getSocialResourceProvider(resource);
-                srp.setConfig(storageConfig);
-                boolean isUgcPresent = srp.getResource(resourceResolver, resource.getPath()) != null ? true : false;
-                if ((componentEnum.equals(ComponentEnum.TALLY_LIKING) || componentEnum.equals(ComponentEnum.TALLY_RATING)
-                        || componentEnum.equals(ComponentEnum.TALLY_VOTING) || componentEnum.equals(ComponentEnum.ACTIVITY_STREAMS)) && isUgcPresent) {
-                    srp.delete(resourceResolver, resource.getPath());
-                } else if (isUgcPresent) {
-                    userUgcComponentFactory.getOperation(componentEnum).delete(resource, session);
-                } else {
-                    log.info("resource not present :" + resource.getPath());
-                }
-                session.save();
-            }
-        } catch (PersistenceException e) {
-            throw new OperationException(e, 0);
-        } catch (RepositoryException e) {
-            throw  new OperationException(e, 0);
-        }
-
-    }
-
     public boolean deleteUserAccount(ResourceResolver resourceResolver, String userId) throws RepositoryException {
         Session session = resourceResolver.adaptTo(Session.class);
 
@@ -144,12 +79,4 @@ public class UserManagementServiceImpl implements UserManagementService {
         return false;
     }
 
-    private Map<ComponentEnum, UgcFilter> getUserUgcFilters(List<ComponentEnum> componentEnumList, String userId) {
-        Map<ComponentEnum, UgcFilter> componentEnumUgcFilterMap = new HashMap<ComponentEnum, UgcFilter>();
-        ResourceResolver resourceResolver = null;////////////////////////////////////
-        for (ComponentEnum componentEnum : componentEnumList) {
-            componentEnumUgcFilterMap.put(componentEnum, userUgcComponentFactory.getUserUgcFilter(componentEnum).getUgcFilter(resourceResolver, userId));
-        }
-        return componentEnumUgcFilterMap;
-    }
 }
