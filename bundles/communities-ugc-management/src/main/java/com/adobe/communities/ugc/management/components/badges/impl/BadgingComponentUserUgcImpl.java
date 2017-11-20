@@ -8,7 +8,6 @@ import com.adobe.communities.ugc.management.commons.deleteoperation.SrpOperation
 import com.adobe.communities.ugc.management.components.badges.BadgingComponentUserUgc;
 import com.adobe.cq.social.SocialException;
 import com.adobe.cq.social.badging.api.BadgingService;
-import com.adobe.cq.social.serviceusers.internal.ServiceUserWrapper;
 import com.adobe.cq.social.srp.SocialResourceProvider;
 import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
@@ -51,20 +50,10 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
     private SocialResourceUtilities socialResourceUtilities;
 
     @Reference
-    private BadgingService badgingService;
-
-    @Reference
-    private ServiceUserWrapper serviceUserWrapper;
-
-    @Reference
     private ResourceResolverFactory rrf;
 
-    private static final String USER_PROFILE_READER = "communities-user-admin";
-    private static final String DEFAULT_USER_ROOT = "/home/users/";
     private static final String PROFILE_BADGES_PATH = "profile/badges";
-
-//    @Reference
-//    SocialUtils socialUtils;
+    private static final String ASI_UGC_PREFIX = "/content/usergenerated/asi";
 
     @Activate
     public void init() {
@@ -81,41 +70,27 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
 
     private SocialResourceProvider getSRP(@Nonnull final ResourceResolver resolver) {
 
-        String ASI_UGC_PREFIX = "/content/usergenerated/asi";
         final Resource asiRoot = resolver.getResource(ASI_UGC_PREFIX);
 
 
-        final SocialResourceConfiguration storageConfig = socialResourceUtilities.getStorageConfig(asiRoot); //socialUtils.getStorageConfig(resource);
+        final SocialResourceConfiguration storageConfig = socialResourceUtilities.getStorageConfig(asiRoot);
         final SocialResourceProvider srp = socialResourceUtilities.getSocialResourceProvider(asiRoot);
 
-
-//        SocialResourceProvider srp = socialUtils.getConfiguredProvider(asiRoot);
         if (srp == null) {
             // asi path should be readable by everybody, so some sort of weird runtime error here
             throw new SocialException("Can not obtain Social Resource Provider");
         }
 
         // initialize the configured SRP
-//        srp.setConfig(socialUtils.getStorageConfig(asiRoot));
         srp.setConfig(storageConfig);
-
         return srp;
     }
-
-
-
-
-
-
 
     // something like asipath/user/home/userid/profile/badge/
     private String getBadgeUserRootPath(ResourceResolver resourceResolver, @Nonnull final SocialResourceProvider srp, @Nonnull final String userId)
             throws RepositoryException {
-
         Session session = resourceResolver.adaptTo(Session.class);
-
         UserManager userManager = resourceResolver.adaptTo(UserManager.class);
-        boolean revertToAutoSave = false;
         String userProfilePath;
         try {
             Authorizable authorizable = userManager.getAuthorizable(userId);
@@ -123,22 +98,15 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
         } catch (RepositoryException e) {
             throw new RepositoryException(e);
         }
-
         if (userProfilePath == null) {
-//            userProfilePath = srp.getASIPath() + DEFAULT_USER_ROOT + userId + "/";
             throw new RuntimeException("Unable to find user: "+userId);
         }
         userProfilePath = srp.getASIPath() + userProfilePath + "/"+ PROFILE_BADGES_PATH;
-
         return userProfilePath;
     }
 
     @Override
     public UgcFilter getUgcFilter(ResourceResolver resourceResolver, String userId) {
-
-
-
-
         final SocialResourceProvider srp = getSRP(resourceResolver);
         final String badgePath;
         try {
@@ -146,7 +114,6 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
         } catch (RepositoryException e) {
             throw new RuntimeException(e);
         }
-
         UgcFilter ugcShowcaseFilter = new UgcFilter();
         ConstraintGroup resourceGroupConstraint = new ConstraintGroup(Operator.And);
         Map<String, String> resourceTypeList = getComponentfilters();
@@ -155,19 +122,11 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
                     Operator.Or));
         }
 
-
-
         ConstraintGroup pathConstaint = new ConstraintGroup(Operator.And);
         pathConstaint.addConstraint(new PathConstraint(badgePath, PathConstraintType.IsDescendantNode));
 
-
-//        ConstraintGroup userGroup = new ConstraintGroup(Operator.And);
-//        String userIdentifierKey = getUserIdentifierKey();
-//        userGroup.addConstraint(new ValueConstraint<String>(userIdentifierKey, userId, ComparisonType.Equals,
-//                Operator.Or));
         ConstraintGroup andcons = new ConstraintGroup(Operator.And); // doesn't matter
         andcons.addConstraint(resourceGroupConstraint);
-      //  andcons.addConstraint(userGroup);
         ugcShowcaseFilter.and(andcons);
         ugcShowcaseFilter.and(pathConstaint);
         return ugcShowcaseFilter;
@@ -179,16 +138,12 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
         try {
             // Max value need to be checked (MAX_VALUE can't be used, throwing out of range error )
             results = ugcSearch.find(null, resourceResolver, getUgcFilter(resourceResolver, userId), 0, 100000, false);
-
-
         } catch (RepositoryException e) {
             throw new RuntimeException(e);
         }
         return results;
     }
-
-
-
+    
     @Override
     public String getUserIdentifierKey() {
         return null;
