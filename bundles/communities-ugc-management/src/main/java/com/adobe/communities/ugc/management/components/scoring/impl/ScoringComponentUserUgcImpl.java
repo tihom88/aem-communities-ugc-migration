@@ -61,11 +61,4 @@ public class ScoringComponentUserUgcImpl extends DefaultComponentUserUgc impleme
         return new SrpDeleteOperation(srpOperations);
     }
 
-    @Override
-    public UgcFilter getUgcFilter(String user) {
-        return super.getUgcFilter(user);
-    }
-
-    
-
 }

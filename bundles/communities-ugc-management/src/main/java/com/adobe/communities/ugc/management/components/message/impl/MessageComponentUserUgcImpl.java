@@ -56,9 +56,6 @@ public class MessageComponentUserUgcImpl extends DefaultComponentUserUgc impleme
         return new CommentDeleteOperation(messagingOperations);
     }
 
-    @Override
-    public UgcFilter getUgcFilter(String user) {
-        return super.getUgcFilter(user);
-    }
+
 
 }

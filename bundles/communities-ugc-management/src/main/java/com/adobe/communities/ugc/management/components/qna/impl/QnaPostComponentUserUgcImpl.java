@@ -56,8 +56,5 @@ public class QnaPostComponentUserUgcImpl extends DefaultComponentUserUgc impleme
     public DeleteOperation getOperations() {
         return new CommentDeleteOperation(qnaForumOperations);
     }
-    @Override
-    public UgcFilter getUgcFilter(String user) {
-        return super.getUgcFilter(user);
-    }
+
 }

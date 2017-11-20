@@ -13,7 +13,7 @@ import org.apache.sling.api.resource.ResourceResolver;
  */
 public interface SrpComponentUserUgc {
     DeleteOperation getOperations();
-    UgcFilter getUgcFilter(String userId);
+    UgcFilter getUgcFilter(ResourceResolver resourceResolver, String userId);
     SearchResults<Resource> getUserUgc(ResourceResolver resourceResolver, String userId);
     public boolean deleteUserUgc(ResourceResolver resourceResolver, String userId) throws OperationException;
 }

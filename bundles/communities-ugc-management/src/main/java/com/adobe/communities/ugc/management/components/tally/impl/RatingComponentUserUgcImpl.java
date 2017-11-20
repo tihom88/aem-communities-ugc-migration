@@ -56,8 +56,4 @@ public class RatingComponentUserUgcImpl extends DefaultComponentUserUgc implemen
         return new TallyDeleteOperation(tallyOperationsService, TallyOperationsService.RATING);
     }
 
-    @Override
-    public UgcFilter getUgcFilter(String user) {
-        return super.getUgcFilter(user);
-    }
 }

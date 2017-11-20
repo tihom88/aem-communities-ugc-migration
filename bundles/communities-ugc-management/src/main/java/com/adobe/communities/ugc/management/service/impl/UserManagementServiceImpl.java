@@ -146,8 +146,9 @@ public class UserManagementServiceImpl implements UserManagementService {
 
     private Map<ComponentEnum, UgcFilter> getUserUgcFilters(List<ComponentEnum> componentEnumList, String userId) {
         Map<ComponentEnum, UgcFilter> componentEnumUgcFilterMap = new HashMap<ComponentEnum, UgcFilter>();
+        ResourceResolver resourceResolver = null;////////////////////////////////////
         for (ComponentEnum componentEnum : componentEnumList) {
-            componentEnumUgcFilterMap.put(componentEnum, userUgcComponentFactory.getUserUgcFilter(componentEnum).getUgcFilter(userId));
+            componentEnumUgcFilterMap.put(componentEnum, userUgcComponentFactory.getUserUgcFilter(componentEnum).getUgcFilter(resourceResolver, userId));
         }
         return componentEnumUgcFilterMap;
     }

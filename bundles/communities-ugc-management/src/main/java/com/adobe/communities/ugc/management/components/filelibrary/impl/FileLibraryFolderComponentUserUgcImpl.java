@@ -56,8 +56,5 @@ public class FileLibraryFolderComponentUserUgcImpl extends DefaultComponentUserU
     public DeleteOperation getOperations() {
         return new CommentDeleteOperation(fileLibraryOperations);
     }
-    @Override
-    public UgcFilter getUgcFilter(String user) {
-        return super.getUgcFilter(user);
-    }
+
 }

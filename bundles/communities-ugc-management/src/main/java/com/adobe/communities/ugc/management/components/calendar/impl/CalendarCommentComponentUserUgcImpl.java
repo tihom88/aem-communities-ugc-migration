@@ -61,10 +61,6 @@ public class CalendarCommentComponentUserUgcImpl extends DefaultComponentUserUgc
         return new CommentDeleteOperation(calendarOperations);
     }
 
-    @Override
-    public UgcFilter getUgcFilter(String user) {
-        return super.getUgcFilter(user);
-    }
 
 
 }

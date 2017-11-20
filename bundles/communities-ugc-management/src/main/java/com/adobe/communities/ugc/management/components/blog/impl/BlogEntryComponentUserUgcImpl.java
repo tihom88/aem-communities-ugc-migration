@@ -61,9 +61,4 @@ public class BlogEntryComponentUserUgcImpl extends DefaultComponentUserUgc imple
         return new CommentDeleteOperation(journalOperations);
     }
 
-    @Override
-    public UgcFilter getUgcFilter(String user) {
-        return super.getUgcFilter(user);
-    }
-
 }

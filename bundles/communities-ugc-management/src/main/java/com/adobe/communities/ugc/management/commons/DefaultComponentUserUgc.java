@@ -42,7 +42,7 @@ public abstract class DefaultComponentUserUgc {
         this.socialResourceUtilities = socialResourceUtilities;
     }
 
-    public UgcFilter getUgcFilter(String user) {
+    public UgcFilter getUgcFilter(ResourceResolver resourceResolver, String user) {
 
         UgcFilter ugcShowcaseFilter = new UgcFilter();
         ConstraintGroup resourceGroupConstraint = new ConstraintGroup(Operator.And);
@@ -67,7 +67,7 @@ public abstract class DefaultComponentUserUgc {
         SearchResults<Resource> results;
         try {
             // Max value need to be checked (MAX_VALUE can't be used, throwing out of range error )
-            results = ugcSearch.find(null, resourceResolver, getUgcFilter(userId), 0, 100000, false);
+            results = ugcSearch.find(null, resourceResolver, getUgcFilter(resourceResolver, userId), 0, 100000, false);
         } catch (RepositoryException e) {
             throw new RuntimeException(e);
         }

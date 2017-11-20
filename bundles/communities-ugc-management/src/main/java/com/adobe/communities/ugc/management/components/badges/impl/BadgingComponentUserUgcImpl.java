@@ -6,18 +6,31 @@ import com.adobe.communities.ugc.management.commons.deleteoperation.BadgeDeleteO
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.SrpOperations;
 import com.adobe.communities.ugc.management.components.badges.BadgingComponentUserUgc;
+import com.adobe.cq.social.SocialException;
 import com.adobe.cq.social.badging.api.BadgingService;
 import com.adobe.cq.social.scoring.api.ScoringService;
+import com.adobe.cq.social.serviceusers.internal.ServiceUserWrapper;
+import com.adobe.cq.social.srp.SocialResourceProvider;
+import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.*;
+import com.adobe.cq.social.ugcbase.SocialUtils;
+import com.adobe.cq.social.ugcbase.core.SocialResourceUtils;
+import com.adobe.granite.security.user.UserProperties;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
+import org.apache.sling.api.resource.LoginException;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
+import org.apache.sling.api.resource.ResourceResolverFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.jcr.RepositoryException;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -28,6 +41,8 @@ import java.util.Map;
 @Service
 @Component
 public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc implements BadgingComponentUserUgc {
+
+    private static final Logger LOG = LoggerFactory.getLogger(BadgingComponentUserUgcImpl.class);
 
     @Reference
     private UgcSearch ugcSearch;
@@ -40,6 +55,18 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
 
     @Reference
     private BadgingService badgingService;
+
+    @Reference
+    private ServiceUserWrapper serviceUserWrapper;
+
+    @Reference
+    private ResourceResolverFactory rrf;
+
+    private static final String USER_PROFILE_READER = "communities-user-admin";
+    private static final String DEFAULT_USER_ROOT = "/home/users/";
+
+//    @Reference
+//    SocialUtils socialUtils;
 
     @Activate
     public void init() {
@@ -54,8 +81,79 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
         return filters;
     }
 
+    private SocialResourceProvider getSRP(@Nonnull final ResourceResolver resolver) {
+
+        String ASI_UGC_PREFIX = "/content/usergenerated/asi";
+        final Resource asiRoot = resolver.getResource(ASI_UGC_PREFIX);
+
+
+        final SocialResourceConfiguration storageConfig = socialResourceUtilities.getStorageConfig(asiRoot); //socialUtils.getStorageConfig(resource);
+        final SocialResourceProvider srp = socialResourceUtilities.getSocialResourceProvider(asiRoot);
+
+
+//        SocialResourceProvider srp = socialUtils.getConfiguredProvider(asiRoot);
+        if (srp == null) {
+            // asi path should be readable by everybody, so some sort of weird runtime error here
+            throw new SocialException("Can not obtain Social Resource Provider");
+        }
+
+        // initialize the configured SRP
+//        srp.setConfig(socialUtils.getStorageConfig(asiRoot));
+        srp.setConfig(storageConfig);
+
+        return srp;
+    }
+
+    // something like asipath/user/home/userid/profile/badge/
+    private String getBadgeUserRootPath(@Nonnull final SocialResourceProvider srp, @Nonnull final String userId)
+            throws RepositoryException {
+
+        String homeRoot = null;
+        ResourceResolver serviceUserReaderResolver = null;
+
+        try {
+            // Use service user to locate the badge path, but ability to read the badges will depend on the resolver
+            // doing the reading.
+            serviceUserReaderResolver =
+                    serviceUserWrapper.getServiceResourceResolver(rrf,
+                            Collections.singletonMap(ResourceResolverFactory.SUBSERVICE, (Object) USER_PROFILE_READER));
+
+            final UserProperties userProps = SocialResourceUtils.getUserProperties(serviceUserReaderResolver, userId);
+            if (userProps != null) {
+                final Resource userResource = userProps.getResource("");
+                homeRoot = socialResourceUtilities.resourceToUGCStoragePath(userResource) + "/";
+            }
+        } catch (final RepositoryException e) {
+            LOG.error("Error retrieving user properties for {}.", userId, e);
+        } catch (final LoginException le) {
+            LOG.error("Error retrieving user properties for {}.", userId, le);
+        } finally {
+            if (serviceUserReaderResolver != null) {
+                serviceUserReaderResolver.close();
+            }
+        }
+
+        if (homeRoot == null) {
+            homeRoot = srp.getASIPath() + DEFAULT_USER_ROOT + userId + "/";
+        }
+
+        return homeRoot + BadgingService.BADGING_FOLDER_NAME;
+    }
+
     @Override
-    public UgcFilter getUgcFilter(String user) {
+    public UgcFilter getUgcFilter(ResourceResolver resourceResolver, String userId) {
+
+
+
+
+        final SocialResourceProvider srp = getSRP(resourceResolver);
+        final String badgePath;
+        try {
+            badgePath = getBadgeUserRootPath(srp, userId);
+        } catch (RepositoryException e) {
+            throw new RuntimeException(e);
+        }
+
         UgcFilter ugcShowcaseFilter = new UgcFilter();
         ConstraintGroup resourceGroupConstraint = new ConstraintGroup(Operator.And);
         Map<String, String> resourceTypeList = getComponentfilters();
@@ -63,19 +161,17 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
             resourceGroupConstraint.addConstraint(new ValueConstraint<String>(entry.getKey(), entry.getValue(), ComparisonType.Equals,
                     Operator.Or));
         }
-        ConstraintGroup userGroup = new ConstraintGroup(Operator.And);
 
+        ugcShowcaseFilter.addConstraint(new PathConstraint(badgePath,
+                PathConstraintType.IsDescendantNode));
 
-
-//        ugcShowcaseFilter.addConstraint(new PathConstraint(resourceBasePath,
-//                PathConstraintType.IsDescendantNode));
-
-        String userIdentifierKey = getUserIdentifierKey();
-        userGroup.addConstraint(new ValueConstraint<String>(userIdentifierKey, user, ComparisonType.Equals,
-                Operator.Or));
+//        ConstraintGroup userGroup = new ConstraintGroup(Operator.And);
+//        String userIdentifierKey = getUserIdentifierKey();
+//        userGroup.addConstraint(new ValueConstraint<String>(userIdentifierKey, userId, ComparisonType.Equals,
+//                Operator.Or));
         ConstraintGroup andcons = new ConstraintGroup(Operator.Or); // doesn't matter
         andcons.addConstraint(resourceGroupConstraint);
-        andcons.addConstraint(userGroup);
+      //  andcons.addConstraint(userGroup);
         ugcShowcaseFilter.and(andcons);
         return ugcShowcaseFilter;
     }
@@ -85,7 +181,9 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
         SearchResults<Resource> results;
         try {
             // Max value need to be checked (MAX_VALUE can't be used, throwing out of range error )
-            results = ugcSearch.find(null, resourceResolver, getUgcFilter(userId), 0, 100000, false);
+            results = ugcSearch.find(null, resourceResolver, getUgcFilter(resourceResolver, userId), 0, 100000, false);
+
+
         } catch (RepositoryException e) {
             throw new RuntimeException(e);
         }

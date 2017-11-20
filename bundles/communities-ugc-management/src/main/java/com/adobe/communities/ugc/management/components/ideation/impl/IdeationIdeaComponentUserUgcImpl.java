@@ -57,8 +57,4 @@ public class IdeationIdeaComponentUserUgcImpl extends DefaultComponentUserUgc im
     public DeleteOperation getOperations() {
         return new CommentDeleteOperation(ideationOperations);
     }
-    @Override
-    public UgcFilter getUgcFilter(String user) {
-        return super.getUgcFilter(user);
-    }
 }

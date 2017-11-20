@@ -56,8 +56,4 @@ public class LikingComponentUserUgcImpl extends DefaultComponentUserUgc implemen
         return new TallyDeleteOperation(tallyOperationsService, TallyOperationsService.LIKING);
     }
 
-    @Override
-    public UgcFilter getUgcFilter(String user) {
-        return super.getUgcFilter(user);
-    }
 }

@@ -56,8 +56,5 @@ public class ForumEntryComponentUserUgcImpl extends DefaultComponentUserUgc impl
     public DeleteOperation getOperations() {
         return new CommentDeleteOperation(forumOperations);
     }
-    @Override
-    public UgcFilter getUgcFilter(String user) {
-        return super.getUgcFilter(user);
-    }
+
 }
