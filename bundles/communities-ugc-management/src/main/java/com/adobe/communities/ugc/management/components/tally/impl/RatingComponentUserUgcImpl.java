@@ -8,7 +8,6 @@ import com.adobe.communities.ugc.management.components.tally.RatingComponentUser
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.tally.client.api.RatingSocialComponent;
 import com.adobe.cq.social.tally.client.endpoints.TallyOperationsService;
-import com.adobe.cq.social.ugc.api.UgcFilter;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;

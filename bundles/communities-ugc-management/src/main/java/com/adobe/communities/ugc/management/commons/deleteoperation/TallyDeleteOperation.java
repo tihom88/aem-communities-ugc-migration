@@ -1,17 +1,14 @@
 package com.adobe.communities.ugc.management.commons.deleteoperation;
 
 import com.adobe.communities.ugc.management.commons.ComponentUserUgc;
-import com.adobe.communities.ugc.management.commons.TallyComponentUserUgc;
-import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.scf.OperationException;
 import com.adobe.cq.social.tally.client.endpoints.TallyOperationsService;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 
-import javax.jcr.Credentials;
 import javax.jcr.Session;
 
-public class TallyDeleteOperation implements DeleteOperation<TallyComponentUserUgc> {
+public class TallyDeleteOperation implements DeleteOperation {
 
     TallyOperationsService tallyOperationsService;
     String tallyType;

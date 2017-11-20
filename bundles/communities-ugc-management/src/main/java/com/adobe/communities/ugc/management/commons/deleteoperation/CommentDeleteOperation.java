@@ -8,7 +8,7 @@ import org.apache.sling.api.resource.ResourceResolver;
 
 import javax.jcr.Session;
 
-public class CommentDeleteOperation implements DeleteOperation<ComponentUserUgc> {
+public class CommentDeleteOperation implements DeleteOperation {
 
     CommentOperations commentOperations;
     public CommentDeleteOperation(CommentOperations commentOperations){
