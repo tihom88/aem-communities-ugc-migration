@@ -1,6 +1,5 @@
 package com.adobe.communities.ugc.management.commons;
 
-import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.scf.OperationException;
 import com.adobe.cq.social.srp.SocialResourceProvider;
 import com.adobe.cq.social.srp.config.SocialResourceConfiguration;

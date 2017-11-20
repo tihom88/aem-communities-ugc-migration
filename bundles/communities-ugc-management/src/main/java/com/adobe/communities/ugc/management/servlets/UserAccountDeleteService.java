@@ -1,6 +1,5 @@
 package com.adobe.communities.ugc.management.servlets;
 
-import com.adobe.communities.ugc.management.commons.ComponentEnum;
 import com.adobe.communities.ugc.management.components.activitystreams.ActivityStreamsComponentUserUgc;
 import com.adobe.communities.ugc.management.components.badges.BadgingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
@@ -21,7 +20,6 @@ import com.adobe.communities.ugc.management.components.scoring.ScoringComponentU
 import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.tally.RatingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.tally.VotingComponentUserUgc;
-import com.adobe.communities.ugc.management.factory.UserUgcComponentFactory;
 import com.adobe.communities.ugc.management.service.UserManagementService;
 import com.adobe.cq.social.scf.OperationException;
 import com.adobe.cq.social.srp.SocialResourceProvider;
@@ -33,7 +31,6 @@ import org.apache.sling.api.SlingHttpServletRequest;
 import org.apache.sling.api.SlingHttpServletResponse;
 import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
-import org.apache.sling.api.servlets.SlingAllMethodsServlet;
 import org.apache.sling.api.servlets.SlingSafeMethodsServlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,8 +38,6 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.RepositoryException;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 //import org.apache.sling.commons.json.JSONObject;
 //import org.apache.sling.servlets.post.JSONResponse;
 
@@ -63,9 +58,6 @@ public class UserAccountDeleteService extends SlingSafeMethodsServlet {
 
     @Reference
     private UgcSearch ugcSearch;
-
-    @Reference
-    private UserUgcComponentFactory userUgcComponentFactory;
 
     @Reference
     UserManagementService userManagementService;
@@ -122,8 +114,6 @@ public class UserAccountDeleteService extends SlingSafeMethodsServlet {
         final SocialResourceConfiguration storageConfig = socialResourceUtilities.getStorageConfig(resource);
         final SocialResourceProvider srp = socialResourceUtilities.getSocialResourceProvider(resource);
         srp.setConfig(storageConfig);
-
-        List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
         try {
             deleteUserUgc(resourceResolver, user);
             userManagementService. deleteUserAccount(resourceResolver,user);
@@ -154,7 +144,6 @@ public class UserAccountDeleteService extends SlingSafeMethodsServlet {
 //            ratingComponentUserUgc.deleteUserUgc(resourceResolver, user);
 //            votingComponentUserUgc.deleteUserUgc(resourceResolver, user);
         notificationComponentUserUgc.deleteUserUgc(resourceResolver, user);
-
         messageComponentUserUgc.deleteUserUgc(resourceResolver, user);
         scoringComponentUserUgc.deleteUserUgc(resourceResolver, user);
         badgingComponentUserUgc.deleteUserUgc(resourceResolver, user);

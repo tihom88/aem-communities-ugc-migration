@@ -1,16 +1,8 @@
 package com.adobe.communities.ugc.management.service.impl;
 
-import com.adobe.communities.ugc.management.commons.ComponentEnum;
-import com.adobe.communities.ugc.management.factory.UserUgcComponentFactory;
 import com.adobe.communities.ugc.management.service.UserManagementService;
-import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
 import com.adobe.cq.social.journal.client.endpoints.JournalOperations;
-import com.adobe.cq.social.scf.OperationException;
-import com.adobe.cq.social.srp.SocialResourceProvider;
-import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
-import com.adobe.cq.social.ugc.api.SearchResults;
-import com.adobe.cq.social.ugc.api.UgcFilter;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
@@ -18,16 +10,12 @@ import org.apache.felix.scr.annotations.Service;
 import org.apache.jackrabbit.api.security.user.Authorizable;
 import org.apache.jackrabbit.api.security.user.UserManager;
 import org.apache.sling.api.resource.PersistenceException;
-import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 /**
  * Created by mokatari on 10/16/17.
@@ -36,16 +24,11 @@ import java.util.Map;
 @Service
 public class UserManagementServiceImpl implements UserManagementService {
     private static final Logger log = LoggerFactory.getLogger(UserManagementServiceImpl.class);
-    @Reference
-    protected ForumOperations forumOperations;
-    @Reference
-    UserUgcComponentFactory userUgcComponentFactory;
+
     @Reference
     UgcSearch ugcSearch;
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
-    @Reference
-    private JournalOperations journalOperations;
 
     public boolean deleteUserAccount(ResourceResolver resourceResolver, String userId) throws RepositoryException {
         Session session = resourceResolver.adaptTo(Session.class);

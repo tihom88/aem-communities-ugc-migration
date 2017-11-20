@@ -1,6 +1,5 @@
 package com.adobe.communities.ugc.management.servlets;
 
-import com.adobe.communities.ugc.management.commons.ComponentEnum;
 import com.adobe.communities.ugc.management.components.activitystreams.ActivityStreamsComponentUserUgc;
 import com.adobe.communities.ugc.management.components.badges.BadgingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
@@ -46,7 +45,6 @@ import javax.servlet.ServletException;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.UUID;
 import java.util.zip.ZipOutputStream;
 //import org.apache.sling.commons.json.JSONObject;
