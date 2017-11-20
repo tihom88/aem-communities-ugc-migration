@@ -1,6 +1,5 @@
 package com.adobe.communities.ugc.management.servlets;
 
-import com.adobe.communities.ugc.management.commons.ComponentEnum;
 import com.adobe.communities.ugc.management.components.activitystreams.ActivityStreamsComponentUserUgc;
 import com.adobe.communities.ugc.management.components.badges.BadgingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
@@ -40,8 +39,6 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.Session;
 import javax.servlet.ServletException;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 //import org.apache.sling.commons.json.JSONObject;
 //import org.apache.sling.servlets.post.JSONResponse;
 
@@ -117,7 +114,6 @@ public class UserUgcDeleteService1 extends SlingSafeMethodsServlet {
         srp.setConfig(storageConfig);
 
         resourceResolver.adaptTo(Session.class);
-        List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
         try {
             deleteUserUgc(resourceResolver, user);
         } catch (OperationException e) {
