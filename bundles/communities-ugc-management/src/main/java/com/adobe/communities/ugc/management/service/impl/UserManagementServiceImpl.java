@@ -1,7 +1,6 @@
 package com.adobe.communities.ugc.management.service.impl;
 
 import com.adobe.communities.ugc.management.service.UserManagementService;
-import com.adobe.cq.social.journal.client.endpoints.JournalOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Component;
@@ -27,6 +26,7 @@ public class UserManagementServiceImpl implements UserManagementService {
 
     @Reference
     UgcSearch ugcSearch;
+    
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
 
