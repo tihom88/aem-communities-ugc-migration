@@ -4,6 +4,7 @@ import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.communities.ugc.management.commons.deleteoperation.BadgeDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.SrpDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.SrpOperations;
 import com.adobe.communities.ugc.management.components.badges.BadgingComponentUserUgc;
 import com.adobe.cq.social.SocialException;
@@ -198,7 +199,7 @@ public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc impleme
     }
 
     public DeleteOperation getOperations() {
-        return new BadgeDeleteOperation(badgingService);
+        return new SrpDeleteOperation(srpOperations);
     }
 
 }

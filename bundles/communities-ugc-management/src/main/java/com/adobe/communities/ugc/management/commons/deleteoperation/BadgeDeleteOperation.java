@@ -11,6 +11,9 @@ import org.apache.sling.api.resource.ResourceResolver;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
+/*
+    Currently we have api to
+ */
 public class BadgeDeleteOperation implements DeleteOperation<BadgingComponentUserUgc> {
 
     BadgingService badgingService;
