@@ -61,8 +61,8 @@ import java.util.zip.ZipOutputStream;
 
 @Component
 @Service
-@Properties({@Property(name = "sling.servlet.paths", value = "/services/social/gdpr/getuserugc1")})
-public class UserUgcFetchService1 extends SlingSafeMethodsServlet {
+@Properties({@Property(name = "sling.servlet.paths", value = "/services/social/getuserugc")})
+public class UserUgcFetchService extends SlingSafeMethodsServlet {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 

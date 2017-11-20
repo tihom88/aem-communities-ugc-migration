@@ -49,8 +49,8 @@ import java.io.IOException;
 
 @Component
 @Service
-@Properties({@Property(name = "sling.servlet.paths", value = "/services/social/gdpr/deleteuserugc1")})
-public class UserUgcDeleteService1 extends SlingSafeMethodsServlet {
+@Properties({@Property(name = "sling.servlet.paths", value = "/services/social/deleteuserugc")})
+public class UserUgcDeleteService extends SlingSafeMethodsServlet {
 
     private final Logger logger = LoggerFactory.getLogger(getClass());
 
