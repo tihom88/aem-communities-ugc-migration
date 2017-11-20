@@ -1,12 +1,13 @@
-package com.adobe.communities.ugc.management.components.message.impl;
+package com.adobe.communities.ugc.management.components.scoring.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.communities.ugc.management.commons.deleteoperation.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.message.MessageComponentUserUgc;
-import com.adobe.cq.social.messaging.client.api.MessageSocialComponent;
-import com.adobe.cq.social.messaging.client.endpoints.MessagingOperations;
+import com.adobe.communities.ugc.management.commons.deleteoperation.SrpDeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.SrpOperations;
+import com.adobe.communities.ugc.management.components.scoring.ScoringComponentUserUgc;
+import com.adobe.cq.social.activitystreams.api.SocialActivityManager;
+import com.adobe.cq.social.scoring.api.ScoringConstants;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcFilter;
 import com.adobe.cq.social.ugc.api.UgcSearch;
@@ -21,18 +22,22 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-@Component
-@Service
-public class MessageComponentUserUgcImpl extends DefaultComponentUserUgc implements MessageComponentUserUgc{
 
-    @Reference
-    MessagingOperations messagingOperations;
+@Service
+@Component
+public class ScoringComponentUserUgcImpl extends DefaultComponentUserUgc implements ScoringComponentUserUgc {
 
     @Reference
     private UgcSearch ugcSearch;
 
     @Reference
+    private SrpOperations srpOperations;
+
+    @Reference
     private SocialResourceUtilities socialResourceUtilities;
+
+    @Reference
+    SocialActivityManager socialActivityManager;
 
     @Activate
     public void init() {
@@ -43,22 +48,24 @@ public class MessageComponentUserUgcImpl extends DefaultComponentUserUgc impleme
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String> filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, MessageSocialComponent.MESSAGE_RESOURCE_TYPE);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, ScoringConstants.RESOURCE_TYPE_SCORE);
         return filters;
     }
 
     @Override
     public String getUserIdentifierKey() {
-        return Identifiers.MESSAGE_SENDER;
+        return Identifiers.USERIDENTIFIER;
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(messagingOperations);
+        return new SrpDeleteOperation(srpOperations);
     }
 
     @Override
     public UgcFilter getUgcFilter(String user) {
         return super.getUgcFilter(user);
     }
+
+    
 
 }

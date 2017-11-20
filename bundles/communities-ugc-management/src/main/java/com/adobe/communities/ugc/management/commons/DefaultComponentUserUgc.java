@@ -78,11 +78,11 @@ public abstract class DefaultComponentUserUgc {
 
         SearchResults<Resource> searchResults = getUserUgc(resourceResolver, userId);
         final Session session = resourceResolver.adaptTo(Session.class);
-        deleteResources(resourceResolver, searchResults, session);
+        deleteResources(resourceResolver, searchResults, session, userId);
         return true;
     }
 
-    private void deleteResources(ResourceResolver resourceResolver, SearchResults<Resource> resources, Session session) throws OperationException {
+    private void deleteResources(ResourceResolver resourceResolver, SearchResults<Resource> resources, Session session, String userId) throws OperationException {
         try {
             for (Resource resource : resources.getResults()) {
                 final SocialResourceConfiguration storageConfig = socialResourceUtilities.getStorageConfig(resource); //socialUtils.getStorageConfig(resource);
@@ -90,7 +90,7 @@ public abstract class DefaultComponentUserUgc {
                 srp.setConfig(storageConfig);
                 boolean isUgcPresent = srp.getResource(resourceResolver, resource.getPath()) != null ? true : false;
                 if (isUgcPresent) {
-                    getOperations().delete(resourceResolver, resource, session);
+                    getOperations().delete(resourceResolver, resource, session, userId);
                     resourceResolver.commit();
 //                    session.save();
                 }

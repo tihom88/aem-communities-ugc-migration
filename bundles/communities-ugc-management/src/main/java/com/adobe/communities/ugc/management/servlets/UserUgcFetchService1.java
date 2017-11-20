@@ -2,6 +2,7 @@ package com.adobe.communities.ugc.management.servlets;
 
 import com.adobe.communities.ugc.management.commons.ComponentEnum;
 import com.adobe.communities.ugc.management.components.activitystreams.ActivityStreamsComponentUserUgc;
+import com.adobe.communities.ugc.management.components.badges.BadgingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
 import com.adobe.communities.ugc.management.components.blog.BlogEntryComponentUserUgc;
 import com.adobe.communities.ugc.management.components.calendar.CalendarCommentComponentUserUgc;
@@ -12,9 +13,11 @@ import com.adobe.communities.ugc.management.components.forum.ForumCommentCompone
 import com.adobe.communities.ugc.management.components.forum.ForumEntryComponentUserUgc;
 import com.adobe.communities.ugc.management.components.ideation.IdeationCommentComponentUserUgc;
 import com.adobe.communities.ugc.management.components.ideation.IdeationIdeaComponentUserUgc;
+import com.adobe.communities.ugc.management.components.message.MessageComponentUserUgc;
 import com.adobe.communities.ugc.management.components.notification.NotificationComponentUserUgc;
 import com.adobe.communities.ugc.management.components.qna.QnaPostComponentUserUgc;
 import com.adobe.communities.ugc.management.components.qna.QnaTopicComponentUserUgc;
+import com.adobe.communities.ugc.management.components.scoring.ScoringComponentUserUgc;
 import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.tally.RatingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.tally.VotingComponentUserUgc;
@@ -105,6 +108,12 @@ public class UserUgcFetchService1 extends SlingSafeMethodsServlet {
     VotingComponentUserUgc votingComponentUserUgc;
     @Reference
     NotificationComponentUserUgc notificationComponentUserUgc;
+    @Reference
+    MessageComponentUserUgc messageComponentUserUgc;
+    @Reference
+    ScoringComponentUserUgc scoringComponentUserUgc;
+    @Reference
+    BadgingComponentUserUgc badgingComponentUserUgc;
 
 
 
@@ -122,23 +131,28 @@ public class UserUgcFetchService1 extends SlingSafeMethodsServlet {
 
         List<SearchResults<Resource>> resultsList = new ArrayList<SearchResults<Resource>>();
 
-        resultsList.add(blogEntryComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(blogCommentComponentUserUgc.getUserUgc(resourceResolver,user));
-        resultsList.add(activityStreamsComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(calendarEventComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(calendarCommentComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(fileLibraryFolderComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(fileLibraryDocumentComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(forumEntryComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(forumCommentComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(ideationIdeaComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(ideationCommentComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(qnaTopicComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(qnaPostComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(likingComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(ratingComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(votingComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(notificationComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(blogEntryComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(blogCommentComponentUserUgc.getUserUgc(resourceResolver,user));
+//        resultsList.add(activityStreamsComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(calendarEventComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(calendarCommentComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(fileLibraryFolderComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(fileLibraryDocumentComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(forumEntryComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(forumCommentComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(ideationIdeaComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(ideationCommentComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(qnaTopicComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(qnaPostComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(likingComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(ratingComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(votingComponentUserUgc.getUserUgc(resourceResolver, user));
+//        resultsList.add(notificationComponentUserUgc.getUserUgc(resourceResolver, user));
+
+        resultsList.add(messageComponentUserUgc.getUserUgc(resourceResolver, user));
+        resultsList.add(scoringComponentUserUgc.getUserUgc(resourceResolver, user));
+   //     resultsList.add(badgingComponentUserUgc.getUserUgc(resourceResolver, user));
+
 
 
 //        List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());

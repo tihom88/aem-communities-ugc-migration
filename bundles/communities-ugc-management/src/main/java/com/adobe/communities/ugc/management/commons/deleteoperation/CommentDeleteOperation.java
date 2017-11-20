@@ -14,7 +14,7 @@ public class CommentDeleteOperation implements DeleteOperation<ComponentUserUgc>
     public CommentDeleteOperation(CommentOperations commentOperations){
         this.commentOperations = commentOperations;
     }
-    public void delete(ResourceResolver resourceResolver, Resource resource, Session session) throws OperationException {
+    public void delete(ResourceResolver resourceResolver, Resource resource, Session session, String authorizableId) throws OperationException {
         commentOperations.delete(resource, session);
     }
 }

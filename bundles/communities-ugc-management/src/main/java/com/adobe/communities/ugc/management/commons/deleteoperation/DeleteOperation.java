@@ -7,5 +7,5 @@ import org.apache.sling.api.resource.ResourceResolver;
 import javax.jcr.Session;
 
 public interface DeleteOperation<T> {
-    void delete(ResourceResolver resourceResolver, Resource resource, Session session) throws OperationException;
+    void delete(ResourceResolver resourceResolver, Resource resource, Session session, String authorizableId) throws OperationException;
 }

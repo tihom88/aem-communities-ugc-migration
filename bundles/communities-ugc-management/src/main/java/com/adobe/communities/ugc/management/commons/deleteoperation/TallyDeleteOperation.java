@@ -19,7 +19,7 @@ public class TallyDeleteOperation implements DeleteOperation<TallyComponentUserU
         this.tallyOperationsService = tallyOperationsService;
         this.tallyType = tallyType;
     }
-    public void delete(ResourceResolver resourceResolver, Resource resource, Session session) throws OperationException {
+    public void delete(ResourceResolver resourceResolver, Resource resource, Session session, String authorizableId) throws OperationException {
         tallyOperationsService.removeCurrentUserResponse(resource.getParent(), this.tallyType);
     }
 }

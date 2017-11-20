@@ -124,6 +124,11 @@ public class UserManagementServiceImpl implements UserManagementService {
                 revertToAutoSave = true;
             }
             authorizable.remove();
+            try {
+                resourceResolver.commit();
+            } catch (PersistenceException e) {
+                throw new RepositoryException(e);
+            }
             session.save();
         } catch (RepositoryException e) {
             throw new RepositoryException(e);

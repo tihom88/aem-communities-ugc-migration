@@ -11,4 +11,5 @@ public interface Identifiers {
     String AUTHORIZABLE_ID = "authorizableId";
     String SOCIAL_ATTACHMENTS = "social:attachments";
     String ACTOR_ID = "actorId";
+    String MESSAGE_SENDER = "sender_t";
 }

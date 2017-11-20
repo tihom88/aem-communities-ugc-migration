@@ -21,7 +21,7 @@ public class SrpDeleteOperation implements DeleteOperation<SrpComponentUserUgc> 
     public SrpDeleteOperation(SrpOperations srpOperations){
         this.srpOperations = srpOperations;
     }
-    public void delete(ResourceResolver resourceResolver, Resource resource, Session session) throws OperationException{
+    public void delete(ResourceResolver resourceResolver, Resource resource, Session session, String authorizableId) throws OperationException{
         try {
             srpOperations.delete(resourceResolver,resource, session);
         } catch (PersistenceException e) {
