@@ -60,6 +60,7 @@ public abstract class DefaultComponentUserUgc {
     public SearchResults<Resource> getUserUgc(ResourceResolver resourceResolver, String userId) {
 
         SearchResults<Resource> results;
+        resourceResolver.refresh();
         try {
             // Max value need to be checked (MAX_VALUE can't be used, throwing out of range error )
             results = ugcSearch.find(null, resourceResolver, getUgcFilter(resourceResolver, userId), 0, 100000, false);

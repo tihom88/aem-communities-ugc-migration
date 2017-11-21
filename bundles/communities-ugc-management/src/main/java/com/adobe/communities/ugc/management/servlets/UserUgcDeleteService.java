@@ -148,9 +148,9 @@ public class UserUgcDeleteService extends SlingSafeMethodsServlet {
         ideationCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
         qnaTopicComponentUserUgc.deleteUserUgc(resourceResolver, user);
         qnaPostComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            likingComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            ratingComponentUserUgc.deleteUserUgc(resourceResolver, user);
-//            votingComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        likingComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        ratingComponentUserUgc.deleteUserUgc(resourceResolver, user);
+        votingComponentUserUgc.deleteUserUgc(resourceResolver, user);
         notificationComponentUserUgc.deleteUserUgc(resourceResolver, user);
 
         messageComponentUserUgc.deleteUserUgc(resourceResolver, user);

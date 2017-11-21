@@ -3,6 +3,7 @@ package com.adobe.communities.ugc.management.components.tally.impl;
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.SrpOperations;
 import com.adobe.communities.ugc.management.commons.deleteoperation.TallyDeleteOperation;
 import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
@@ -33,6 +34,9 @@ public class LikingComponentUserUgcImpl extends DefaultComponentUserUgc implemen
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
 
+    @Reference
+    SrpOperations srpOperations;
+
     @Activate
     public void init() {
         setUgcSearch(ugcSearch);
@@ -52,7 +56,7 @@ public class LikingComponentUserUgcImpl extends DefaultComponentUserUgc implemen
     }
 
     public DeleteOperation getOperations() {
-        return new TallyDeleteOperation(tallyOperationsService, TallyOperationsService.LIKING);
+        return new TallyDeleteOperation(srpOperations, tallyOperationsService, TallyOperationsService.LIKING);
     }
 
 }
