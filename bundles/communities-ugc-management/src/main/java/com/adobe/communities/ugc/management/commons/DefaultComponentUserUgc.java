@@ -19,6 +19,7 @@ import java.util.Map;
  */
 
 public abstract class DefaultComponentUserUgc {
+    private static final int MAX_RESULTS = Integer.MAX_VALUE-1;
 
     private UgcSearch ugcSearch;
     private SocialResourceUtilities socialResourceUtilities;
@@ -63,7 +64,7 @@ public abstract class DefaultComponentUserUgc {
         resourceResolver.refresh();
         try {
             // Max value need to be checked (MAX_VALUE can't be used, throwing out of range error )
-            results = ugcSearch.find(null, resourceResolver, getUgcFilter(resourceResolver, userId), 0, 100000, false);
+            results = ugcSearch.find(null, resourceResolver, getUgcFilter(resourceResolver, userId), 0, MAX_RESULTS, false);
         } catch (RepositoryException e) {
             throw new RuntimeException(e);
         }
