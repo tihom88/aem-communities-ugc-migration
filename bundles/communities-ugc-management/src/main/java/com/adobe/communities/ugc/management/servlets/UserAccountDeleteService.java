@@ -116,7 +116,7 @@ public class UserAccountDeleteService extends SlingSafeMethodsServlet {
         srp.setConfig(storageConfig);
         try {
             deleteUserUgc(resourceResolver, user);
-            userAccountDeletionService. deleteUserAccount(resourceResolver,user);
+            userAccountDeletionService.deleteUserAccount(resourceResolver,user);
         }catch (RepositoryException e) {
             throw new ServletException(e);
         }

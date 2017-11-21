@@ -1,6 +1,9 @@
 package com.adobe.communities.ugc.management.account.impl;
 
 import com.adobe.communities.ugc.management.account.UserAccountDeletionService;
+import com.adobe.cq.social.SocialException;
+import com.adobe.cq.social.srp.SocialResourceProvider;
+import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Component;
@@ -9,10 +12,12 @@ import org.apache.felix.scr.annotations.Service;
 import org.apache.jackrabbit.api.security.user.Authorizable;
 import org.apache.jackrabbit.api.security.user.UserManager;
 import org.apache.sling.api.resource.PersistenceException;
+import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.annotation.Nonnull;
 import javax.jcr.RepositoryException;
 import javax.jcr.Session;
 
@@ -23,6 +28,8 @@ import javax.jcr.Session;
 @Service
 public class UserAccountDeletionServiceImpl implements UserAccountDeletionService {
     private static final Logger log = LoggerFactory.getLogger(UserAccountDeletionServiceImpl.class);
+
+    private static final String ASI_UGC_PREFIX = "/content/usergenerated/asi";
 
     @Reference
     UgcSearch ugcSearch;
@@ -41,6 +48,12 @@ public class UserAccountDeletionServiceImpl implements UserAccountDeletionServic
                 userManager.autoSave(false);
                 revertToAutoSave = true;
             }
+
+            SocialResourceProvider srp = getSRP(resourceResolver);
+
+            String userProfilePath = authorizable.getPath();
+            String userUgcPath = srp.getASIPath() + userProfilePath;
+            srp.delete(resourceResolver, userUgcPath);
             authorizable.remove();
             try {
                 resourceResolver.commit();
@@ -49,6 +62,8 @@ public class UserAccountDeletionServiceImpl implements UserAccountDeletionServic
             }
             session.save();
         } catch (RepositoryException e) {
+            throw new RepositoryException(e);
+        } catch (PersistenceException e) {
             throw new RepositoryException(e);
         } finally {
             if (revertToAutoSave) {
@@ -61,5 +76,24 @@ public class UserAccountDeletionServiceImpl implements UserAccountDeletionServic
         }
         return false;
     }
+
+    private SocialResourceProvider getSRP(@Nonnull final ResourceResolver resolver) {
+
+        final Resource asiRoot = resolver.getResource(ASI_UGC_PREFIX);
+
+
+        final SocialResourceConfiguration storageConfig = socialResourceUtilities.getStorageConfig(asiRoot);
+        final SocialResourceProvider srp = socialResourceUtilities.getSocialResourceProvider(asiRoot);
+
+        if (srp == null) {
+            // asi path should be readable by everybody, so some sort of weird runtime error here
+            throw new SocialException("Can not obtain Social Resource Provider");
+        }
+
+        // initialize the configured SRP
+        srp.setConfig(storageConfig);
+        return srp;
+    }
+
 
 }

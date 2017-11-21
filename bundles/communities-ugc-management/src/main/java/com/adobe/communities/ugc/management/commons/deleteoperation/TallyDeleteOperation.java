@@ -23,7 +23,6 @@ public class TallyDeleteOperation implements DeleteOperation {
         this.srpOperations = srpOperations;
     }
     public void delete(ResourceResolver resourceResolver, Resource resource, Session session, String authorizableId) throws OperationException {
-
         tallyOperationsService.setTallyResponse(resource.getParent(), authorizableId, session, UNSET, tallyType, Collections.<String, Object> emptyMap());//removeCurrentUserResponse(resource.getParent(), this.tallyType);
         try {
             srpOperations.delete(resourceResolver, resource, session);
