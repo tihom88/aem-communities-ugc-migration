@@ -1,5 +1,6 @@
 package com.adobe.communities.ugc.management.servlets;
 
+import com.adobe.communities.ugc.management.commons.ComponentUserUgc;
 import com.adobe.communities.ugc.management.components.activitystreams.ActivityStreamsComponentUserUgc;
 import com.adobe.communities.ugc.management.components.badges.BadgingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
@@ -17,6 +18,7 @@ import com.adobe.communities.ugc.management.components.notification.Notification
 import com.adobe.communities.ugc.management.components.qna.QnaPostComponentUserUgc;
 import com.adobe.communities.ugc.management.components.qna.QnaTopicComponentUserUgc;
 import com.adobe.communities.ugc.management.components.scoring.ScoringComponentUserUgc;
+import com.adobe.communities.ugc.management.components.service.ComponentsService;
 import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.tally.RatingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.tally.VotingComponentUserUgc;
@@ -39,6 +41,7 @@ import org.slf4j.LoggerFactory;
 import javax.jcr.Session;
 import javax.servlet.ServletException;
 import java.io.IOException;
+import java.util.List;
 //import org.apache.sling.commons.json.JSONObject;
 //import org.apache.sling.servlets.post.JSONResponse;
 
@@ -61,46 +64,7 @@ public class UserUgcDeleteService extends SlingSafeMethodsServlet {
     private UgcSearch ugcSearch;
 
     @Reference
-    ActivityStreamsComponentUserUgc activityStreamsComponentUserUgc;
-    @Reference
-    BlogCommentComponentUserUgc blogCommentComponentUserUgc;
-    @Reference
-    BlogEntryComponentUserUgc blogEntryComponentUserUgc;
-    @Reference
-    CalendarEventComponentUserUgc calendarEventComponentUserUgc;
-    @Reference
-    CalendarCommentComponentUserUgc calendarCommentComponentUserUgc;
-    @Reference
-    FileLibraryFolderComponentUserUgc fileLibraryFolderComponentUserUgc;
-    @Reference
-    FileLibraryDocumentComponentUserUgc fileLibraryDocumentComponentUserUgc;
-    @Reference
-    ForumEntryComponentUserUgc forumEntryComponentUserUgc;
-    @Reference
-    ForumCommentComponentUserUgc forumCommentComponentUserUgc;
-    @Reference
-    IdeationCommentComponentUserUgc ideationCommentComponentUserUgc;
-    @Reference
-    IdeationIdeaComponentUserUgc ideationIdeaComponentUserUgc;
-    @Reference
-    QnaPostComponentUserUgc qnaPostComponentUserUgc;
-    @Reference
-    QnaTopicComponentUserUgc qnaTopicComponentUserUgc;
-    @Reference
-    LikingComponentUserUgc likingComponentUserUgc;
-    @Reference
-    RatingComponentUserUgc ratingComponentUserUgc;
-    @Reference
-    VotingComponentUserUgc votingComponentUserUgc;
-    @Reference
-    NotificationComponentUserUgc notificationComponentUserUgc;
-    @Reference
-    MessageComponentUserUgc messageComponentUserUgc;
-    @Reference
-    ScoringComponentUserUgc scoringComponentUserUgc;
-    @Reference
-    BadgingComponentUserUgc badgingComponentUserUgc;
-
+    private ComponentsService componentsService;
 
     @Override
     protected void doGet(final SlingHttpServletRequest req,
@@ -115,7 +79,11 @@ public class UserUgcDeleteService extends SlingSafeMethodsServlet {
 
         resourceResolver.adaptTo(Session.class);
         try {
-            deleteUserUgc(resourceResolver, user);
+            List<ComponentUserUgc> componentUserUgcList = componentsService.getServicesList();
+            for (ComponentUserUgc componentUserUgc : componentUserUgcList) {
+                componentUserUgc.deleteUserUgc(resourceResolver, user);
+            }
+
         } catch (OperationException e) {
             throw new ServletException(e);
         }
@@ -133,36 +101,6 @@ public class UserUgcDeleteService extends SlingSafeMethodsServlet {
         }
         response.append("]");
         return response.toString();
-    }
-
-    public void deleteUserUgc(ResourceResolver resourceResolver, String user) throws OperationException {
-        blogEntryComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        blogCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        calendarEventComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        calendarCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        fileLibraryFolderComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        fileLibraryDocumentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        forumEntryComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        forumCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        ideationIdeaComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        ideationCommentComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        qnaTopicComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        qnaPostComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        likingComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        ratingComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        votingComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        notificationComponentUserUgc.deleteUserUgc(resourceResolver, user);
-
-        messageComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        scoringComponentUserUgc.deleteUserUgc(resourceResolver, user);
-        badgingComponentUserUgc.deleteUserUgc(resourceResolver, user);
-
-
-            /*
-                Activity stream should be last as these are created even for deletion of data/nodes
-            */
-        activityStreamsComponentUserUgc.deleteUserUgc(resourceResolver, user);
-
     }
 
 }

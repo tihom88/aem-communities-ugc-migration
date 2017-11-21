@@ -1,5 +1,6 @@
 package com.adobe.communities.ugc.management.servlets;
 
+import com.adobe.communities.ugc.management.commons.ComponentUserUgc;
 import com.adobe.communities.ugc.management.components.activitystreams.ActivityStreamsComponentUserUgc;
 import com.adobe.communities.ugc.management.components.badges.BadgingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
@@ -17,6 +18,7 @@ import com.adobe.communities.ugc.management.components.notification.Notification
 import com.adobe.communities.ugc.management.components.qna.QnaPostComponentUserUgc;
 import com.adobe.communities.ugc.management.components.qna.QnaTopicComponentUserUgc;
 import com.adobe.communities.ugc.management.components.scoring.ScoringComponentUserUgc;
+import com.adobe.communities.ugc.management.components.service.ComponentsService;
 import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.tally.RatingComponentUserUgc;
 import com.adobe.communities.ugc.management.components.tally.VotingComponentUserUgc;
@@ -55,10 +57,6 @@ import java.util.zip.ZipOutputStream;
  * Created by mokatari on 10/11/17.
  */
 
-
-
-
-
 @Component
 @Service
 @Properties({@Property(name = "sling.servlet.paths", value = "/services/social/getuserugc")})
@@ -73,47 +71,7 @@ public class UserUgcFetchService extends SlingSafeMethodsServlet {
     private UgcSearch ugcSearch;
 
     @Reference
-    ActivityStreamsComponentUserUgc activityStreamsComponentUserUgc;
-    @Reference
-    BlogCommentComponentUserUgc blogCommentComponentUserUgc;
-    @Reference
-    BlogEntryComponentUserUgc blogEntryComponentUserUgc;
-    @Reference
-    CalendarEventComponentUserUgc calendarEventComponentUserUgc;
-    @Reference
-    CalendarCommentComponentUserUgc calendarCommentComponentUserUgc;
-    @Reference
-    FileLibraryFolderComponentUserUgc fileLibraryFolderComponentUserUgc;
-    @Reference
-    FileLibraryDocumentComponentUserUgc fileLibraryDocumentComponentUserUgc;
-    @Reference
-    ForumEntryComponentUserUgc forumEntryComponentUserUgc;
-    @Reference
-    ForumCommentComponentUserUgc forumCommentComponentUserUgc;
-    @Reference
-    IdeationCommentComponentUserUgc ideationCommentComponentUserUgc;
-    @Reference
-    IdeationIdeaComponentUserUgc ideationIdeaComponentUserUgc;
-    @Reference
-    QnaPostComponentUserUgc qnaPostComponentUserUgc;
-    @Reference
-    QnaTopicComponentUserUgc qnaTopicComponentUserUgc;
-    @Reference
-    LikingComponentUserUgc likingComponentUserUgc;
-    @Reference
-    RatingComponentUserUgc ratingComponentUserUgc;
-    @Reference
-    VotingComponentUserUgc votingComponentUserUgc;
-    @Reference
-    NotificationComponentUserUgc notificationComponentUserUgc;
-    @Reference
-    MessageComponentUserUgc messageComponentUserUgc;
-    @Reference
-    ScoringComponentUserUgc scoringComponentUserUgc;
-    @Reference
-    BadgingComponentUserUgc badgingComponentUserUgc;
-
-
+    private ComponentsService componentsService;
 
     @Override
     protected void doGet(final SlingHttpServletRequest req,
@@ -129,30 +87,10 @@ public class UserUgcFetchService extends SlingSafeMethodsServlet {
 
         List<SearchResults<Resource>> resultsList = new ArrayList<SearchResults<Resource>>();
 
-        resultsList.add(blogEntryComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(blogCommentComponentUserUgc.getUserUgc(resourceResolver,user));
-        resultsList.add(activityStreamsComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(calendarEventComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(calendarCommentComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(fileLibraryFolderComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(fileLibraryDocumentComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(forumEntryComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(forumCommentComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(ideationIdeaComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(ideationCommentComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(qnaTopicComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(qnaPostComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(likingComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(ratingComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(votingComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(notificationComponentUserUgc.getUserUgc(resourceResolver, user));
-
-        resultsList.add(messageComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(scoringComponentUserUgc.getUserUgc(resourceResolver, user));
-        resultsList.add(badgingComponentUserUgc.getUserUgc(resourceResolver, user));
-
-
-
+        List<ComponentUserUgc> componentUserUgcList = componentsService.getServicesList();
+        for (ComponentUserUgc componentUserUgc : componentUserUgcList) {
+            resultsList.add(componentUserUgc.getUserUgc(resourceResolver, user));
+        }
 //        List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
 //        Map<ComponentEnum, SearchResults<Resource>> resultsList = userManagementService.getUserUgc(resourceResolver, componentEnumList, user);
 //        List<String> attachmentPaths = new ArrayList<String>();
