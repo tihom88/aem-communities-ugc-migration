@@ -1,12 +1,13 @@
-package com.adobe.communities.ugc.management.components.forum.impl;
+package com.adobe.communities.ugc.management.components.message.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.forum.ForumEntryComponentUserUgc;
-import com.adobe.cq.social.forum.client.api.Forum;
-import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.SrpDeleteOperation;
+import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
+import com.adobe.communities.ugc.management.components.message.MessageComponentUserUgc;
+import com.adobe.cq.social.messaging.client.api.MessageSocialComponent;
+import com.adobe.cq.social.messaging.client.endpoints.MessagingOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
@@ -22,16 +23,19 @@ import java.util.Map;
  */
 @Component
 @Service
-public class ForumEntryComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements ForumEntryComponentUserUgc{
+public class MessageComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements MessageComponentUserUgc{
 
     @Reference
-    ForumOperations forumOperations;
+    MessagingOperations messagingOperations;
 
     @Reference
     private UgcSearch ugcSearch;
 
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
+
+    @Reference
+    private SrpOperations srpOperations;
 
     @Activate
     public void init() {
@@ -42,17 +46,19 @@ public class ForumEntryComponentUserUgcImplImpl extends DefaultComponentUserUgcI
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String> filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Forum.RESOURCE_TYPE_TOPIC);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, MessageSocialComponent.MESSAGE_RESOURCE_TYPE);
         return filters;
     }
 
     @Override
     public String getUserIdentifierKey() {
-        return Identifiers.AUTHORIZABLE_ID;
+        return Identifiers.MESSAGE_SENDER;
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(forumOperations);
+        return new SrpDeleteOperation(srpOperations);
     }
+
+
 
 }

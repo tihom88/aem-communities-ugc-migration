@@ -5,9 +5,9 @@ import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
 import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
 import com.adobe.communities.ugc.management.commons.deleteoperation.impl.TallyDeleteOperation;
-import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
+import com.adobe.communities.ugc.management.components.tally.VotingComponentUserUgc;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
-import com.adobe.cq.social.tally.client.api.LikingSocialComponent;
+import com.adobe.cq.social.tally.client.api.VotingSocialComponent;
 import com.adobe.cq.social.tally.client.endpoints.TallyOperationsService;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Service
 @Component
-public class LikingComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements LikingComponentUserUgc{
+public class VotingComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements VotingComponentUserUgc{
 
     @Reference
     TallyOperationsService tallyOperationsService;
@@ -46,7 +46,7 @@ public class LikingComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl 
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, LikingSocialComponent.LIKING_RESOURCE_TYPE);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, VotingSocialComponent.VOTING_RESOURCE_TYPE);
         return filters;
     }
 
@@ -56,7 +56,8 @@ public class LikingComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl 
     }
 
     public DeleteOperation getOperations() {
-        return new TallyDeleteOperation(srpOperations, tallyOperationsService, TallyOperationsService.LIKING);
+        return new TallyDeleteOperation(srpOperations, tallyOperationsService, TallyOperationsService.VOTING);
     }
+
 
 }

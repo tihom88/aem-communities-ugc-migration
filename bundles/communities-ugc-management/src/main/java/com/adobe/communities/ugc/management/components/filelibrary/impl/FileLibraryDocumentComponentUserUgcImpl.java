@@ -1,12 +1,12 @@
-package com.adobe.communities.ugc.management.components.forum.impl;
+package com.adobe.communities.ugc.management.components.filelibrary.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.forum.ForumCommentComponentUserUgc;
-import com.adobe.cq.social.forum.client.api.Forum;
-import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
+import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryDocumentComponentUserUgc;
+import com.adobe.cq.social.filelibrary.client.api.FileLibrary;
+import com.adobe.cq.social.filelibrary.client.endpoints.FileLibraryOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
@@ -20,12 +20,13 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
+
 @Component
 @Service
-public class ForumCommentComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements ForumCommentComponentUserUgc {
+public class FileLibraryDocumentComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements FileLibraryDocumentComponentUserUgc {
 
     @Reference
-    ForumOperations forumOperations;
+    FileLibraryOperations fileLibraryOperations;
 
     @Reference
     private UgcSearch ugcSearch;
@@ -42,7 +43,7 @@ public class ForumCommentComponentUserUgcImplImpl extends DefaultComponentUserUg
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Forum.RESOURCE_TYPE_POST);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, FileLibrary.RESOURCE_TYPE_DOCUMENT);
         return filters;
     }
 
@@ -52,6 +53,7 @@ public class ForumCommentComponentUserUgcImplImpl extends DefaultComponentUserUg
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(forumOperations);
+        return new CommentDeleteOperation(fileLibraryOperations);
     }
+
 }

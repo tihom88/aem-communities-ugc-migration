@@ -1,14 +1,13 @@
-package com.adobe.communities.ugc.management.components.tally.impl;
+package com.adobe.communities.ugc.management.components.blog.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
-import com.adobe.communities.ugc.management.commons.deleteoperation.impl.TallyDeleteOperation;
-import com.adobe.communities.ugc.management.components.tally.RatingComponentUserUgc;
+import com.adobe.communities.ugc.management.components.blog.BlogEntryComponentUserUgc;
+import com.adobe.cq.social.journal.client.api.Journal;
+import com.adobe.cq.social.journal.client.endpoints.JournalOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
-import com.adobe.cq.social.tally.client.api.RatingSocialComponent;
-import com.adobe.cq.social.tally.client.endpoints.TallyOperationsService;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -21,20 +20,18 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-@Service
 @Component
-public class RatingComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements RatingComponentUserUgc{
+@Service
+public class BlogEntryComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements BlogEntryComponentUserUgc{
 
     @Reference
-    TallyOperationsService tallyOperationsService;
+    JournalOperations journalOperations;
 
     @Reference
     private UgcSearch ugcSearch;
 
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
-    @Reference
-    SrpOperations srpOperations;
 
     @Activate
     public void init() {
@@ -44,18 +41,18 @@ public class RatingComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl 
 
     @Override
     public Map<String, String> getComponentfilters() {
-        final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, RatingSocialComponent.RATING_RESOURCE_TYPE);
+        final Map<String, String> filters = new HashMap<String, String>();
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, Journal.RESOURCE_TYPE_ENTRY);
         return filters;
     }
 
     @Override
     public String getUserIdentifierKey() {
-        return Identifiers.USERIDENTIFIER;
+        return Identifiers.AUTHORIZABLE_ID;
     }
 
     public DeleteOperation getOperations() {
-        return new TallyDeleteOperation(srpOperations, tallyOperationsService, TallyOperationsService.RATING);
+        return new CommentDeleteOperation(journalOperations);
     }
 
 }

@@ -1,12 +1,12 @@
-package com.adobe.communities.ugc.management.components.ideation.impl;
+package com.adobe.communities.ugc.management.components.activitystreams.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.ideation.IdeationCommentComponentUserUgc;
-import com.adobe.cq.social.ideation.client.api.Ideation;
-import com.adobe.cq.social.ideation.client.endpoints.IdeationOperations;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.SrpDeleteOperation;
+import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
+import com.adobe.communities.ugc.management.components.activitystreams.ActivityStreamsComponentUserUgc;
+import com.adobe.cq.social.activitystreams.api.SocialActivityManager;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
@@ -20,18 +20,22 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-@Component
-@Service
-public class IdeationCommentComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements IdeationCommentComponentUserUgc{
 
-    @Reference
-    IdeationOperations ideationOperations;
+@Service
+@Component
+public class ActivityStreamsComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements ActivityStreamsComponentUserUgc {
 
     @Reference
     private UgcSearch ugcSearch;
 
     @Reference
+    private SrpOperations srpOperations;
+
+    @Reference
     private SocialResourceUtilities socialResourceUtilities;
+
+    @Reference
+    SocialActivityManager socialActivityManager;
 
     @Activate
     public void init() {
@@ -41,18 +45,18 @@ public class IdeationCommentComponentUserUgcImplImpl extends DefaultComponentUse
 
     @Override
     public Map<String, String> getComponentfilters() {
-        final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Ideation.RESOURCE_TYPE_COMMENT);
+        final Map<String, String> filters = new HashMap<String, String>();
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, "social/activitystreams/components/activity");
         return filters;
     }
 
     @Override
     public String getUserIdentifierKey() {
-        return Identifiers.AUTHORIZABLE_ID;
+        return Identifiers.ACTOR_ID;
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(ideationOperations);
+        return new SrpDeleteOperation(srpOperations);
     }
 
 }

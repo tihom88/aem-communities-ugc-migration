@@ -1,12 +1,12 @@
-package com.adobe.communities.ugc.management.components.qna.impl;
+package com.adobe.communities.ugc.management.components.notification.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.qna.QnaTopicComponentUserUgc;
-import com.adobe.cq.social.qna.client.api.QnaPost;
-import com.adobe.cq.social.qna.client.endpoints.QnaForumOperations;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.SrpDeleteOperation;
+import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
+import com.adobe.communities.ugc.management.components.notification.NotificationComponentUserUgc;
+import com.adobe.cq.social.notifications.client.api.SocialNotification;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
@@ -22,10 +22,10 @@ import java.util.Map;
  */
 @Component
 @Service
-public class QnaTopicComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements QnaTopicComponentUserUgc{
+public class NotificationComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements NotificationComponentUserUgc {
 
     @Reference
-    QnaForumOperations qnaForumOperations;
+    private SrpOperations srpOperations;
 
     @Reference
     private UgcSearch ugcSearch;
@@ -41,18 +41,19 @@ public class QnaTopicComponentUserUgcImplImpl extends DefaultComponentUserUgcImp
 
     @Override
     public Map<String, String> getComponentfilters() {
-        final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, QnaPost.RESOURCE_TYPE_TOPIC);
+        final Map<String, String> filters = new HashMap<String, String>();
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, SocialNotification.RESOURCE_TYPE);
         return filters;
     }
 
     @Override
     public String getUserIdentifierKey() {
-        return Identifiers.AUTHORIZABLE_ID;
+        return Identifiers.ACTOR_ID;
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(qnaForumOperations);
+        return new SrpDeleteOperation(srpOperations);
     }
+
 
 }

@@ -22,7 +22,7 @@ import java.util.Map;
  */
 @Component
 @Service
-public class CalendarEventComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements CalendarEventComponentUserUgc {
+public class CalendarEventComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements CalendarEventComponentUserUgc {
 
     @Reference
     CalendarOperations calendarOperations;

@@ -1,12 +1,12 @@
-package com.adobe.communities.ugc.management.components.notification.impl;
+package com.adobe.communities.ugc.management.components.ideation.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.commons.deleteoperation.impl.SrpDeleteOperation;
-import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
-import com.adobe.communities.ugc.management.components.notification.NotificationComponentUserUgc;
-import com.adobe.cq.social.notifications.client.api.SocialNotification;
+import com.adobe.communities.ugc.management.components.ideation.IdeationCommentComponentUserUgc;
+import com.adobe.cq.social.ideation.client.api.Ideation;
+import com.adobe.cq.social.ideation.client.endpoints.IdeationOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
@@ -22,10 +22,10 @@ import java.util.Map;
  */
 @Component
 @Service
-public class NotificationComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements NotificationComponentUserUgc {
+public class IdeationCommentComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements IdeationCommentComponentUserUgc{
 
     @Reference
-    private SrpOperations srpOperations;
+    IdeationOperations ideationOperations;
 
     @Reference
     private UgcSearch ugcSearch;
@@ -41,19 +41,18 @@ public class NotificationComponentUserUgcImplImpl extends DefaultComponentUserUg
 
     @Override
     public Map<String, String> getComponentfilters() {
-        final Map<String, String> filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, SocialNotification.RESOURCE_TYPE);
+        final Map<String, String>  filters = new HashMap<String, String>();
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, Ideation.RESOURCE_TYPE_COMMENT);
         return filters;
     }
 
     @Override
     public String getUserIdentifierKey() {
-        return Identifiers.ACTOR_ID;
+        return Identifiers.AUTHORIZABLE_ID;
     }
 
     public DeleteOperation getOperations() {
-        return new SrpDeleteOperation(srpOperations);
+        return new CommentDeleteOperation(ideationOperations);
     }
-
 
 }

@@ -36,9 +36,9 @@ import java.util.Map;
 
 @Service
 @Component
-public class BadgingComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements BadgingComponentUserUgc {
+public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements BadgingComponentUserUgc {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BadgingComponentUserUgcImplImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BadgingComponentUserUgcImpl.class);
 
     private static final int MAX_RESULTS = Integer.MAX_VALUE-1;
 

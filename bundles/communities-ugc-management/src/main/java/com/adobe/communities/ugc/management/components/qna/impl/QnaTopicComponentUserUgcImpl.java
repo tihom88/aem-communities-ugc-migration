@@ -1,12 +1,12 @@
-package com.adobe.communities.ugc.management.components.blog.impl;
+package com.adobe.communities.ugc.management.components.qna.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.blog.BlogCommentComponentUserUgc;
-import com.adobe.cq.social.journal.client.api.Journal;
-import com.adobe.cq.social.journal.client.endpoints.JournalOperations;
+import com.adobe.communities.ugc.management.components.qna.QnaTopicComponentUserUgc;
+import com.adobe.cq.social.qna.client.api.QnaPost;
+import com.adobe.cq.social.qna.client.endpoints.QnaForumOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
@@ -20,13 +20,12 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-
 @Component
 @Service
-public class BlogCommentComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements BlogCommentComponentUserUgc {
+public class QnaTopicComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements QnaTopicComponentUserUgc{
 
     @Reference
-    private JournalOperations journalOperations;
+    QnaForumOperations qnaForumOperations;
 
     @Reference
     private UgcSearch ugcSearch;
@@ -43,7 +42,7 @@ public class BlogCommentComponentUserUgcImplImpl extends DefaultComponentUserUgc
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Journal.RESOURCE_TYPE_COMMENT);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, QnaPost.RESOURCE_TYPE_TOPIC);
         return filters;
     }
 
@@ -53,7 +52,7 @@ public class BlogCommentComponentUserUgcImplImpl extends DefaultComponentUserUgc
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(journalOperations);
+        return new CommentDeleteOperation(qnaForumOperations);
     }
 
 }

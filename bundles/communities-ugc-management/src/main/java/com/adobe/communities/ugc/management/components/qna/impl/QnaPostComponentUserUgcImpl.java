@@ -1,12 +1,12 @@
-package com.adobe.communities.ugc.management.components.filelibrary.impl;
+package com.adobe.communities.ugc.management.components.qna.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryFolderComponentUserUgc;
-import com.adobe.cq.social.filelibrary.client.api.FileLibrary;
-import com.adobe.cq.social.filelibrary.client.endpoints.FileLibraryOperations;
+import com.adobe.communities.ugc.management.components.qna.QnaPostComponentUserUgc;
+import com.adobe.cq.social.qna.client.api.QnaPost;
+import com.adobe.cq.social.qna.client.endpoints.QnaForumOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
@@ -22,10 +22,10 @@ import java.util.Map;
  */
 @Component
 @Service
-public class FileLibraryFolderComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements FileLibraryFolderComponentUserUgc {
+public class QnaPostComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements QnaPostComponentUserUgc {
 
     @Reference
-    FileLibraryOperations fileLibraryOperations;
+    QnaForumOperations qnaForumOperations;
 
     @Reference
     private UgcSearch ugcSearch;
@@ -42,7 +42,7 @@ public class FileLibraryFolderComponentUserUgcImplImpl extends DefaultComponentU
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, FileLibrary.RESOURCE_TYPE_FOLDER);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, QnaPost.RESOURCE_TYPE_POST);
         return filters;
     }
 
@@ -52,7 +52,7 @@ public class FileLibraryFolderComponentUserUgcImplImpl extends DefaultComponentU
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(fileLibraryOperations);
+        return new CommentDeleteOperation(qnaForumOperations);
     }
 
 }

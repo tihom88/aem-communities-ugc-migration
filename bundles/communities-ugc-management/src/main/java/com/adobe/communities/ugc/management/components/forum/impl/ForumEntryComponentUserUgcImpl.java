@@ -1,12 +1,12 @@
-package com.adobe.communities.ugc.management.components.calendar.impl;
+package com.adobe.communities.ugc.management.components.forum.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.calendar.CalendarCommentComponentUserUgc;
-import com.adobe.cq.social.calendar.client.api.Calendar;
-import com.adobe.cq.social.calendar.client.endpoints.CalendarOperations;
+import com.adobe.communities.ugc.management.components.forum.ForumEntryComponentUserUgc;
+import com.adobe.cq.social.forum.client.api.Forum;
+import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
@@ -20,13 +20,12 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-
 @Component
 @Service
-public class CalendarCommentComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements CalendarCommentComponentUserUgc {
+public class ForumEntryComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements ForumEntryComponentUserUgc{
 
     @Reference
-    CalendarOperations calendarOperations;
+    ForumOperations forumOperations;
 
     @Reference
     private UgcSearch ugcSearch;
@@ -42,8 +41,8 @@ public class CalendarCommentComponentUserUgcImplImpl extends DefaultComponentUse
 
     @Override
     public Map<String, String> getComponentfilters() {
-        final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Calendar.RESOURCE_TYPE_EVENT_REPLY);
+        final Map<String, String> filters = new HashMap<String, String>();
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, Forum.RESOURCE_TYPE_TOPIC);
         return filters;
     }
 
@@ -53,9 +52,7 @@ public class CalendarCommentComponentUserUgcImplImpl extends DefaultComponentUse
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(calendarOperations);
+        return new CommentDeleteOperation(forumOperations);
     }
-
-
 
 }

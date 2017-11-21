@@ -1,12 +1,13 @@
-package com.adobe.communities.ugc.management.components.filelibrary.impl;
+package com.adobe.communities.ugc.management.components.scoring.impl;
 
 import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryDocumentComponentUserUgc;
-import com.adobe.cq.social.filelibrary.client.api.FileLibrary;
-import com.adobe.cq.social.filelibrary.client.endpoints.FileLibraryOperations;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.SrpDeleteOperation;
+import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
+import com.adobe.communities.ugc.management.components.scoring.ScoringComponentUserUgc;
+import com.adobe.cq.social.activitystreams.api.SocialActivityManager;
+import com.adobe.cq.social.scoring.api.ScoringConstants;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
@@ -21,18 +22,21 @@ import java.util.Map;
  * Created by mokatari on 10/13/17.
  */
 
-@Component
 @Service
-public class FileLibraryDocumentComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements FileLibraryDocumentComponentUserUgc {
-
-    @Reference
-    FileLibraryOperations fileLibraryOperations;
+@Component
+public class ScoringComponentUserUgcImpl extends DefaultComponentUserUgcImpl implements ScoringComponentUserUgc {
 
     @Reference
     private UgcSearch ugcSearch;
 
     @Reference
+    private SrpOperations srpOperations;
+
+    @Reference
     private SocialResourceUtilities socialResourceUtilities;
+
+    @Reference
+    SocialActivityManager socialActivityManager;
 
     @Activate
     public void init() {
@@ -42,18 +46,18 @@ public class FileLibraryDocumentComponentUserUgcImplImpl extends DefaultComponen
 
     @Override
     public Map<String, String> getComponentfilters() {
-        final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, FileLibrary.RESOURCE_TYPE_DOCUMENT);
+        final Map<String, String> filters = new HashMap<String, String>();
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, ScoringConstants.RESOURCE_TYPE_SCORE);
         return filters;
     }
 
     @Override
     public String getUserIdentifierKey() {
-        return Identifiers.AUTHORIZABLE_ID;
+        return Identifiers.USERIDENTIFIER;
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(fileLibraryOperations);
+        return new SrpDeleteOperation(srpOperations);
     }
 
 }
