@@ -1,16 +1,13 @@
-package com.adobe.communities.ugc.management.components.message.impl;
+package com.adobe.communities.ugc.management.components.notification.impl;
 
-import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.communities.ugc.management.commons.deleteoperation.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.commons.deleteoperation.SrpDeleteOperation;
-import com.adobe.communities.ugc.management.commons.deleteoperation.SrpOperations;
-import com.adobe.communities.ugc.management.components.message.MessageComponentUserUgc;
-import com.adobe.cq.social.messaging.client.api.MessageSocialComponent;
-import com.adobe.cq.social.messaging.client.endpoints.MessagingOperations;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.SrpDeleteOperation;
+import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
+import com.adobe.communities.ugc.management.components.notification.NotificationComponentUserUgc;
+import com.adobe.cq.social.notifications.client.api.SocialNotification;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
-import com.adobe.cq.social.ugc.api.UgcFilter;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -25,19 +22,16 @@ import java.util.Map;
  */
 @Component
 @Service
-public class MessageComponentUserUgcImpl extends DefaultComponentUserUgc implements MessageComponentUserUgc{
+public class NotificationComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements NotificationComponentUserUgc {
 
     @Reference
-    MessagingOperations messagingOperations;
+    private SrpOperations srpOperations;
 
     @Reference
     private UgcSearch ugcSearch;
 
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
-
-    @Reference
-    private SrpOperations srpOperations;
 
     @Activate
     public void init() {
@@ -48,19 +42,18 @@ public class MessageComponentUserUgcImpl extends DefaultComponentUserUgc impleme
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String> filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, MessageSocialComponent.MESSAGE_RESOURCE_TYPE);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, SocialNotification.RESOURCE_TYPE);
         return filters;
     }
 
     @Override
     public String getUserIdentifierKey() {
-        return Identifiers.MESSAGE_SENDER;
+        return Identifiers.ACTOR_ID;
     }
 
     public DeleteOperation getOperations() {
         return new SrpDeleteOperation(srpOperations);
     }
-
 
 
 }

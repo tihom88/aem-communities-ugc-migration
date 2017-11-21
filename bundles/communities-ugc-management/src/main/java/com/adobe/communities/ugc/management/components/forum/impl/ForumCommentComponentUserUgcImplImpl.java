@@ -1,14 +1,13 @@
-package com.adobe.communities.ugc.management.components.tally.impl;
+package com.adobe.communities.ugc.management.components.forum.impl;
 
-import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.commons.deleteoperation.SrpOperations;
-import com.adobe.communities.ugc.management.commons.deleteoperation.TallyDeleteOperation;
-import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
+import com.adobe.communities.ugc.management.components.forum.ForumCommentComponentUserUgc;
+import com.adobe.cq.social.forum.client.api.Forum;
+import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
-import com.adobe.cq.social.tally.client.api.LikingSocialComponent;
-import com.adobe.cq.social.tally.client.endpoints.TallyOperationsService;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -21,21 +20,18 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-@Service
 @Component
-public class LikingComponentUserUgcImpl extends DefaultComponentUserUgc implements LikingComponentUserUgc{
+@Service
+public class ForumCommentComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements ForumCommentComponentUserUgc {
 
     @Reference
-    TallyOperationsService tallyOperationsService;
+    ForumOperations forumOperations;
 
     @Reference
     private UgcSearch ugcSearch;
 
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
-
-    @Reference
-    SrpOperations srpOperations;
 
     @Activate
     public void init() {
@@ -46,17 +42,16 @@ public class LikingComponentUserUgcImpl extends DefaultComponentUserUgc implemen
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, LikingSocialComponent.LIKING_RESOURCE_TYPE);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, Forum.RESOURCE_TYPE_POST);
         return filters;
     }
 
     @Override
     public String getUserIdentifierKey() {
-        return Identifiers.USERIDENTIFIER;
+        return Identifiers.AUTHORIZABLE_ID;
     }
 
     public DeleteOperation getOperations() {
-        return new TallyDeleteOperation(srpOperations, tallyOperationsService, TallyOperationsService.LIKING);
+        return new CommentDeleteOperation(forumOperations);
     }
-
 }

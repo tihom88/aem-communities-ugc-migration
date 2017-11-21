@@ -1,15 +1,13 @@
-package com.adobe.communities.ugc.management.components.forum.impl;
+package com.adobe.communities.ugc.management.components.filelibrary.impl;
 
-import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.communities.ugc.management.commons.deleteoperation.CommentDeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.forum.ForumEntryComponentUserUgc;
-import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.forum.client.api.Forum;
-import com.adobe.cq.social.forum.client.endpoints.ForumOperations;
+import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryDocumentComponentUserUgc;
+import com.adobe.cq.social.filelibrary.client.api.FileLibrary;
+import com.adobe.cq.social.filelibrary.client.endpoints.FileLibraryOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
-import com.adobe.cq.social.ugc.api.UgcFilter;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -22,12 +20,13 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
+
 @Component
 @Service
-public class ForumEntryComponentUserUgcImpl extends DefaultComponentUserUgc implements ForumEntryComponentUserUgc{
+public class FileLibraryDocumentComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements FileLibraryDocumentComponentUserUgc {
 
     @Reference
-    ForumOperations forumOperations;
+    FileLibraryOperations fileLibraryOperations;
 
     @Reference
     private UgcSearch ugcSearch;
@@ -43,8 +42,8 @@ public class ForumEntryComponentUserUgcImpl extends DefaultComponentUserUgc impl
 
     @Override
     public Map<String, String> getComponentfilters() {
-        final Map<String, String> filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Forum.RESOURCE_TYPE_TOPIC);
+        final Map<String, String>  filters = new HashMap<String, String>();
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, FileLibrary.RESOURCE_TYPE_DOCUMENT);
         return filters;
     }
 
@@ -54,7 +53,7 @@ public class ForumEntryComponentUserUgcImpl extends DefaultComponentUserUgc impl
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(forumOperations);
+        return new CommentDeleteOperation(fileLibraryOperations);
     }
 
 }

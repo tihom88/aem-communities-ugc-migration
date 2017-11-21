@@ -1,10 +1,10 @@
 package com.adobe.communities.ugc.management.components.badges.impl;
 
-import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.commons.deleteoperation.SrpDeleteOperation;
-import com.adobe.communities.ugc.management.commons.deleteoperation.SrpOperations;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.SrpDeleteOperation;
+import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
 import com.adobe.communities.ugc.management.components.badges.BadgingComponentUserUgc;
 import com.adobe.cq.social.SocialException;
 import com.adobe.cq.social.badging.api.BadgingService;
@@ -36,9 +36,9 @@ import java.util.Map;
 
 @Service
 @Component
-public class BadgingComponentUserUgcImpl extends DefaultComponentUserUgc implements BadgingComponentUserUgc {
+public class BadgingComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements BadgingComponentUserUgc {
 
-    private static final Logger LOG = LoggerFactory.getLogger(BadgingComponentUserUgcImpl.class);
+    private static final Logger LOG = LoggerFactory.getLogger(BadgingComponentUserUgcImplImpl.class);
 
     private static final int MAX_RESULTS = Integer.MAX_VALUE-1;
 

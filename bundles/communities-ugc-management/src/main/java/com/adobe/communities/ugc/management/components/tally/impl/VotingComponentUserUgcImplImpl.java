@@ -1,14 +1,14 @@
-package com.adobe.communities.ugc.management.components.filelibrary.impl;
+package com.adobe.communities.ugc.management.components.tally.impl;
 
-import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.communities.ugc.management.commons.deleteoperation.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryDocumentComponentUserUgc;
-import com.adobe.cq.social.filelibrary.client.api.FileLibrary;
-import com.adobe.cq.social.filelibrary.client.endpoints.FileLibraryOperations;
+import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.TallyDeleteOperation;
+import com.adobe.communities.ugc.management.components.tally.VotingComponentUserUgc;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
-import com.adobe.cq.social.ugc.api.UgcFilter;
+import com.adobe.cq.social.tally.client.api.VotingSocialComponent;
+import com.adobe.cq.social.tally.client.endpoints.TallyOperationsService;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -21,19 +21,21 @@ import java.util.Map;
 /**
  * Created by mokatari on 10/13/17.
  */
-
-@Component
 @Service
-public class FileLibraryDocumentComponentUserUgcImpl extends DefaultComponentUserUgc implements FileLibraryDocumentComponentUserUgc {
+@Component
+public class VotingComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements VotingComponentUserUgc{
 
     @Reference
-    FileLibraryOperations fileLibraryOperations;
+    TallyOperationsService tallyOperationsService;
 
     @Reference
     private UgcSearch ugcSearch;
 
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
+
+    @Reference
+    SrpOperations srpOperations;
 
     @Activate
     public void init() {
@@ -44,17 +46,18 @@ public class FileLibraryDocumentComponentUserUgcImpl extends DefaultComponentUse
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, FileLibrary.RESOURCE_TYPE_DOCUMENT);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, VotingSocialComponent.VOTING_RESOURCE_TYPE);
         return filters;
     }
 
     @Override
     public String getUserIdentifierKey() {
-        return Identifiers.AUTHORIZABLE_ID;
+        return Identifiers.USERIDENTIFIER;
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(fileLibraryOperations);
+        return new TallyDeleteOperation(srpOperations, tallyOperationsService, TallyOperationsService.VOTING);
     }
+
 
 }

@@ -18,7 +18,7 @@ import java.util.Map;
  * Created by mokatari on 10/12/17.
  */
 
-public abstract class DefaultComponentUserUgc {
+public abstract class DefaultComponentUserUgcImpl {
     private static final int MAX_RESULTS = Integer.MAX_VALUE-1;
 
     private UgcSearch ugcSearch;

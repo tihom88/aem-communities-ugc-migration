@@ -1,15 +1,13 @@
-package com.adobe.communities.ugc.management.components.ideation.impl;
+package com.adobe.communities.ugc.management.components.filelibrary.impl;
 
-import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.communities.ugc.management.commons.deleteoperation.CommentDeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.ideation.IdeationIdeaComponentUserUgc;
-import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.ideation.client.api.Ideation;
-import com.adobe.cq.social.ideation.client.endpoints.IdeationOperations;
+import com.adobe.communities.ugc.management.components.filelibrary.FileLibraryFolderComponentUserUgc;
+import com.adobe.cq.social.filelibrary.client.api.FileLibrary;
+import com.adobe.cq.social.filelibrary.client.endpoints.FileLibraryOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
-import com.adobe.cq.social.ugc.api.UgcFilter;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -24,10 +22,10 @@ import java.util.Map;
  */
 @Component
 @Service
-public class IdeationIdeaComponentUserUgcImpl extends DefaultComponentUserUgc implements IdeationIdeaComponentUserUgc{
+public class FileLibraryFolderComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements FileLibraryFolderComponentUserUgc {
 
     @Reference
-    IdeationOperations ideationOperations;
+    FileLibraryOperations fileLibraryOperations;
 
     @Reference
     private UgcSearch ugcSearch;
@@ -41,11 +39,10 @@ public class IdeationIdeaComponentUserUgcImpl extends DefaultComponentUserUgc im
         setSocialResourceUtilities(socialResourceUtilities);
     }
 
-
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Ideation.RESOURCE_TYPE_IDEA);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, FileLibrary.RESOURCE_TYPE_FOLDER);
         return filters;
     }
 
@@ -55,6 +52,7 @@ public class IdeationIdeaComponentUserUgcImpl extends DefaultComponentUserUgc im
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(ideationOperations);
+        return new CommentDeleteOperation(fileLibraryOperations);
     }
+
 }

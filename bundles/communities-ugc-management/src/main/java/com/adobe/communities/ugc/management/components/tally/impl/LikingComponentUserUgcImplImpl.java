@@ -1,13 +1,13 @@
 package com.adobe.communities.ugc.management.components.tally.impl;
 
-import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.commons.deleteoperation.SrpOperations;
-import com.adobe.communities.ugc.management.commons.deleteoperation.TallyDeleteOperation;
-import com.adobe.communities.ugc.management.components.tally.RatingComponentUserUgc;
+import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.TallyDeleteOperation;
+import com.adobe.communities.ugc.management.components.tally.LikingComponentUserUgc;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
-import com.adobe.cq.social.tally.client.api.RatingSocialComponent;
+import com.adobe.cq.social.tally.client.api.LikingSocialComponent;
 import com.adobe.cq.social.tally.client.endpoints.TallyOperationsService;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
@@ -23,7 +23,7 @@ import java.util.Map;
  */
 @Service
 @Component
-public class RatingComponentUserUgcImpl extends DefaultComponentUserUgc implements RatingComponentUserUgc{
+public class LikingComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements LikingComponentUserUgc{
 
     @Reference
     TallyOperationsService tallyOperationsService;
@@ -33,6 +33,7 @@ public class RatingComponentUserUgcImpl extends DefaultComponentUserUgc implemen
 
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
+
     @Reference
     SrpOperations srpOperations;
 
@@ -45,7 +46,7 @@ public class RatingComponentUserUgcImpl extends DefaultComponentUserUgc implemen
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String>  filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, RatingSocialComponent.RATING_RESOURCE_TYPE);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, LikingSocialComponent.LIKING_RESOURCE_TYPE);
         return filters;
     }
 
@@ -55,7 +56,7 @@ public class RatingComponentUserUgcImpl extends DefaultComponentUserUgc implemen
     }
 
     public DeleteOperation getOperations() {
-        return new TallyDeleteOperation(srpOperations, tallyOperationsService, TallyOperationsService.RATING);
+        return new TallyDeleteOperation(srpOperations, tallyOperationsService, TallyOperationsService.LIKING);
     }
 
 }

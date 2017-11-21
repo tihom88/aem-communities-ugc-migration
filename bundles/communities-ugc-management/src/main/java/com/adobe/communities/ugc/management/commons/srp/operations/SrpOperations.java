@@ -1,4 +1,4 @@
-package com.adobe.communities.ugc.management.commons.deleteoperation;
+package com.adobe.communities.ugc.management.commons.srp.operations;
 
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;

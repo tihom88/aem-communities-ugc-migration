@@ -1,6 +1,7 @@
-package com.adobe.communities.ugc.management.commons.deleteoperation;
+package com.adobe.communities.ugc.management.commons.deleteoperation.impl;
 
-import com.adobe.communities.ugc.management.commons.ComponentUserUgc;
+import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
+import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
 import com.adobe.cq.social.scf.OperationException;
 import org.apache.sling.api.resource.PersistenceException;
 import org.apache.sling.api.resource.Resource;

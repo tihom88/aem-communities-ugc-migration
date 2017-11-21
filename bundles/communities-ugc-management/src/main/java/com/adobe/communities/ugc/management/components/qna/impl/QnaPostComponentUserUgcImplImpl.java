@@ -1,15 +1,13 @@
 package com.adobe.communities.ugc.management.components.qna.impl;
 
-import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.communities.ugc.management.commons.deleteoperation.CommentDeleteOperation;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
 import com.adobe.communities.ugc.management.components.qna.QnaPostComponentUserUgc;
-import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
 import com.adobe.cq.social.qna.client.api.QnaPost;
 import com.adobe.cq.social.qna.client.endpoints.QnaForumOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
-import com.adobe.cq.social.ugc.api.UgcFilter;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
@@ -24,7 +22,7 @@ import java.util.Map;
  */
 @Component
 @Service
-public class QnaPostComponentUserUgcImpl extends DefaultComponentUserUgc implements QnaPostComponentUserUgc {
+public class QnaPostComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements QnaPostComponentUserUgc {
 
     @Reference
     QnaForumOperations qnaForumOperations;

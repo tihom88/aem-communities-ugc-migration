@@ -1,5 +1,6 @@
-package com.adobe.communities.ugc.management.commons.deleteoperation;
+package com.adobe.communities.ugc.management.commons.srp.operations.impl;
 
+import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
 import com.adobe.cq.social.srp.SocialResourceProvider;
 import com.adobe.cq.social.srp.config.SocialResourceConfiguration;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;

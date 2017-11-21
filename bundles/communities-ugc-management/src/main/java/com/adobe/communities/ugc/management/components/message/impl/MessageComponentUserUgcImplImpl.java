@@ -1,24 +1,19 @@
-package com.adobe.communities.ugc.management.components.blog.impl;
+package com.adobe.communities.ugc.management.components.message.impl;
 
-import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgc;
+import com.adobe.communities.ugc.management.commons.DefaultComponentUserUgcImpl;
 import com.adobe.communities.ugc.management.commons.Identifiers;
-import com.adobe.communities.ugc.management.commons.deleteoperation.CommentDeleteOperation;
 import com.adobe.communities.ugc.management.commons.deleteoperation.DeleteOperation;
-import com.adobe.communities.ugc.management.components.blog.BlogEntryComponentUserUgc;
-import com.adobe.cq.social.commons.comments.endpoints.CommentOperations;
-import com.adobe.cq.social.journal.client.api.Journal;
-import com.adobe.cq.social.journal.client.endpoints.JournalOperations;
-import com.adobe.cq.social.scf.OperationException;
+import com.adobe.communities.ugc.management.commons.deleteoperation.impl.SrpDeleteOperation;
+import com.adobe.communities.ugc.management.commons.srp.operations.SrpOperations;
+import com.adobe.communities.ugc.management.components.message.MessageComponentUserUgc;
+import com.adobe.cq.social.messaging.client.api.MessageSocialComponent;
+import com.adobe.cq.social.messaging.client.endpoints.MessagingOperations;
 import com.adobe.cq.social.srp.utilities.api.SocialResourceUtilities;
-import com.adobe.cq.social.ugc.api.SearchResults;
-import com.adobe.cq.social.ugc.api.UgcFilter;
 import com.adobe.cq.social.ugc.api.UgcSearch;
 import org.apache.felix.scr.annotations.Activate;
 import org.apache.felix.scr.annotations.Component;
 import org.apache.felix.scr.annotations.Reference;
 import org.apache.felix.scr.annotations.Service;
-import org.apache.sling.api.resource.Resource;
-import org.apache.sling.api.resource.ResourceResolver;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -28,16 +23,19 @@ import java.util.Map;
  */
 @Component
 @Service
-public class BlogEntryComponentUserUgcImpl extends DefaultComponentUserUgc implements BlogEntryComponentUserUgc{
+public class MessageComponentUserUgcImplImpl extends DefaultComponentUserUgcImpl implements MessageComponentUserUgc{
 
     @Reference
-    JournalOperations journalOperations;
+    MessagingOperations messagingOperations;
 
     @Reference
     private UgcSearch ugcSearch;
 
     @Reference
     private SocialResourceUtilities socialResourceUtilities;
+
+    @Reference
+    private SrpOperations srpOperations;
 
     @Activate
     public void init() {
@@ -48,17 +46,19 @@ public class BlogEntryComponentUserUgcImpl extends DefaultComponentUserUgc imple
     @Override
     public Map<String, String> getComponentfilters() {
         final Map<String, String> filters = new HashMap<String, String>();
-        filters.put(Identifiers.SLING_RESOURCE_TYPE, Journal.RESOURCE_TYPE_ENTRY);
+        filters.put(Identifiers.SLING_RESOURCE_TYPE, MessageSocialComponent.MESSAGE_RESOURCE_TYPE);
         return filters;
     }
 
     @Override
     public String getUserIdentifierKey() {
-        return Identifiers.AUTHORIZABLE_ID;
+        return Identifiers.MESSAGE_SENDER;
     }
 
     public DeleteOperation getOperations() {
-        return new CommentDeleteOperation(journalOperations);
+        return new SrpDeleteOperation(srpOperations);
     }
+
+
 
 }
