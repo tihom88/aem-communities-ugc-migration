@@ -78,7 +78,8 @@ public class UserUgcFetchService extends SlingSafeMethodsServlet {
                          final SlingHttpServletResponse resp) throws ServletException, IOException {
         final Resource resource = req.getResource();
         String user = req.getParameter("user");
-        resp.setContentType("text/plain");
+        String responseType = req.getParameter("return");// this value is either json or zip
+
         final ResourceResolver resourceResolver = req.getResourceResolver();
         final SocialResourceConfiguration storageConfig = socialResourceUtilities.getStorageConfig(resource); //socialUtils.getStorageConfig(resource);
         final SocialResourceProvider srp = socialResourceUtilities.getSocialResourceProvider(resource);
@@ -91,27 +92,40 @@ public class UserUgcFetchService extends SlingSafeMethodsServlet {
         for (ComponentUserUgc componentUserUgc : componentUserUgcList) {
             resultsList.add(componentUserUgc.getUserUgc(resourceResolver, user));
         }
-//        List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
-//        Map<ComponentEnum, SearchResults<Resource>> resultsList = userManagementService.getUserUgc(resourceResolver, componentEnumList, user);
-//        List<String> attachmentPaths = new ArrayList<String>();
-//        for (Map.Entry<ComponentEnum, SearchResults<Resource>> entry : resultsList.entrySet()) {
-//            for (Resource resourceNode : entry.getValue().getResults()) {
-//                String[] images = resourceNode.getValueMap().get("social:attachments") == null? new String[0] : (String[]) resourceNode.getValueMap().get("social:attachments") ;
-//                for (String imagePath : images) {
-//                    attachmentPaths.add(imagePath);
-//                }
-//            }
-//        }
 
-//        resp.setContentType("application/octet-stream");
-//        final String headerKey = "Content-Disposition";
-//        final String headerValue = "attachment; filename=\""+user+"-UgcData.zip" +"\"";
-//        resp.setHeader(headerKey, headerValue);
+//        List<ComponentEnum> componentEnumList = Arrays.asList(ComponentEnum.values());
+      //  Map<ComponentEnum, SearchResults<Resource>> resultsList = userManagementService.getUserUgc(resourceResolver, componentEnumList, user);
+        List<String> attachmentPaths = new ArrayList<String>();
+        for (SearchResults<Resource> result : resultsList) {
+            for (Resource resourceNode : result.getResults()) {
+                String[] images = resourceNode.getValueMap().get("social:attachments") == null? new String[0] : (String[]) resourceNode.getValueMap().get("social:attachments") ;
+                for (String imagePath : images) {
+                    attachmentPaths.add(imagePath);
+                }
+            }
+        }
+
 
         String userUgcJson = null;
         userUgcJson = createJsonResponse(resultsList);
-//        createZip(req, resp, userUgcJson, attachmentPaths);
-        resp.getOutputStream().println(userUgcJson.toString());
+
+        if ("json".equals(responseType)){
+            resp.setContentType("text/plain");
+            resp.getOutputStream().println(userUgcJson.toString());
+        }
+        else if("zip".equals(responseType)) {
+            resp.setContentType("application/octet-stream");
+            final String headerKey = "Content-Disposition";
+            final String headerValue = "attachment; filename=\""+user+"-UgcData.zip" +"\"";
+            resp.setHeader(headerKey, headerValue);
+
+            createZip(req, resp, userUgcJson, attachmentPaths);
+            resp.getOutputStream().println("export complete for user: "+user);
+        }
+        else{
+            resp.getOutputStream().println("Please use with right parameters");
+        }
+
     }
 
     private void createZip(final SlingHttpServletRequest req,
