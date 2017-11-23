@@ -88,8 +88,16 @@ public class ComponentsServiceImpl  implements ComponentsService {
     @Reference
     BadgingComponentUserUgc badgingComponentUserUgc;
 
+    private List<ComponentUserUgc> componentsServiceList;
+
     public List<ComponentUserUgc> getServicesList() {
-        List<ComponentUserUgc> componentsServiceList = new ArrayList<ComponentUserUgc>();
+
+        return componentsServiceList;
+    }
+
+    @Activate
+    public void init() {
+        this.componentsServiceList = new ArrayList<ComponentUserUgc>();
         componentsServiceList.add(blogCommentComponentUserUgc);
         componentsServiceList.add(blogEntryComponentUserUgc);
         componentsServiceList.add(calendarEventComponentUserUgc);
@@ -102,21 +110,19 @@ public class ComponentsServiceImpl  implements ComponentsService {
         componentsServiceList.add(ideationIdeaComponentUserUgc);
         componentsServiceList.add(qnaPostComponentUserUgc);
         componentsServiceList.add(qnaTopicComponentUserUgc);
-        componentsServiceList.add(likingComponentUserUgc);
-        componentsServiceList.add(ratingComponentUserUgc);
-        componentsServiceList.add(votingComponentUserUgc);
         componentsServiceList.add(notificationComponentUserUgc);
         componentsServiceList.add(messageComponentUserUgc);
         componentsServiceList.add(scoringComponentUserUgc);
         componentsServiceList.add(badgingComponentUserUgc);
+        componentsServiceList.add(likingComponentUserUgc);
+        componentsServiceList.add(ratingComponentUserUgc);
+        componentsServiceList.add(votingComponentUserUgc);
 
         //todo: change api's so that events can be ignored for deletion
         /*
                 Activity stream should be last as these are created even for deletion of data/nodes.
         */
         componentsServiceList.add(activityStreamsComponentUserUgc);
-
-        return componentsServiceList;
     }
 
 }

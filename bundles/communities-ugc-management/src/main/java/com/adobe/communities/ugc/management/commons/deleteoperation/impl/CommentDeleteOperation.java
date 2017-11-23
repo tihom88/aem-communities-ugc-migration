@@ -8,6 +8,8 @@ import org.apache.sling.api.resource.Resource;
 import org.apache.sling.api.resource.ResourceResolver;
 
 import javax.jcr.Session;
+import java.util.HashMap;
+import java.util.Map;
 
 public class CommentDeleteOperation implements DeleteOperation {
 
@@ -16,6 +18,8 @@ public class CommentDeleteOperation implements DeleteOperation {
         this.commentOperations = commentOperations;
     }
     public void delete(ResourceResolver resourceResolver, Resource resource, Session session, String authorizableId) throws OperationException {
-        commentOperations.delete(resource, session);
+        Map<String, Object> conditionals = new HashMap<String, Object>();
+        conditionals.put("ignoreEventPost", true);
+        commentOperations.delete(resource, session, conditionals);
     }
 }

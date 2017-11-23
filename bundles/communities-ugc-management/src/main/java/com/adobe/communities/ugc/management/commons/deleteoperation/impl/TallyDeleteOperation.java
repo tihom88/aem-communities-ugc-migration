@@ -10,6 +10,8 @@ import org.apache.sling.api.resource.ResourceResolver;
 
 import javax.jcr.Session;
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class TallyDeleteOperation implements DeleteOperation {
 
@@ -24,7 +26,9 @@ public class TallyDeleteOperation implements DeleteOperation {
         this.srpOperations = srpOperations;
     }
     public void delete(ResourceResolver resourceResolver, Resource resource, Session session, String authorizableId) throws OperationException {
-        tallyOperationsService.setTallyResponse(resource.getParent(), authorizableId, session, UNSET, tallyType, Collections.<String, Object> emptyMap());//removeCurrentUserResponse(resource.getParent(), this.tallyType);
+        Map<String, Object> conditionals = new HashMap<String, Object>();
+        conditionals.put("ignoreEventPost", true);
+        tallyOperationsService.setTallyResponse(resource.getParent(), authorizableId, session, UNSET, tallyType, Collections.<String, Object> emptyMap(), conditionals);
         try {
             srpOperations.delete(resourceResolver, resource, session);
         } catch (PersistenceException e) {
