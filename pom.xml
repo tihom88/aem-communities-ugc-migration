@@ -38,7 +38,7 @@ written permission of Adobe.
         <module>bundles/communities-ugc-migration-legacyExport</module>
         <module>bundles/communities-ugc-migration-legacyProfileExport</module>
         <module>content</module>
-        <module>bundles/communities-ugc-management</module>
+        <module>bundles/communities-ugc-management-servlet</module>
     </modules>
 
     <profiles>

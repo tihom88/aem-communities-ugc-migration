@@ -20,7 +20,7 @@ written permission of Adobe.
     <parent>
         <groupId>com.adobe.aem.communities</groupId>
         <artifactId>communities-ugc-migration-reactor</artifactId>
-        <version>0.0.1-SNAPSHOT</version>
+        <version>1.0.6-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
 
@@ -29,6 +29,7 @@ written permission of Adobe.
     <!-- ====================================================================== -->
     <artifactId>communities-ugc-management-servlet</artifactId>
     <packaging>bundle</packaging>
+    <version>0.0.1-SNAPSHOT</version>
     <name>AEM Communities UGC Management - Bundle</name>
 
     <!-- ====================================================================== -->
