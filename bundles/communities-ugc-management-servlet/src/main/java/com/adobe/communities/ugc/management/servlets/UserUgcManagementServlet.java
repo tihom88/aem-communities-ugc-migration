@@ -60,36 +60,65 @@ public class UserUgcManagementServlet extends SlingAllMethodsServlet {
     @Override
     protected void doGet(final SlingHttpServletRequest req,
                          final SlingHttpServletResponse resp) throws ServletException, IOException {
+
         if (ENABLED){
             final ResourceResolver resourceResolver = req.getResourceResolver();
             String user = req.getParameter("user");
             String operation = req.getParameter("operation");
-            if (user != null && operation.equalsIgnoreCase("getugc")) {
-                resp.setContentType("application/octet-stream");
-                final String headerKey = "Content-Disposition";
-                final String headerValue = "attachment; filename=\"" + user + "-UgcData.zip" + "\"";
-                resp.setHeader(headerKey, headerValue);
-                try {
-                    userUgcManagement.getUserUgc(resourceResolver, user, resp.getOutputStream());
-                } catch (OperationException e) {
-                    logger.error("Operation exception", e);
-                    throw new ServletException("Unable to get UGC for " + user);
-                } catch (JSONException e) {
-                    logger.error("Malformed json", e);
-                    throw new ServletException("Unable to get UGC for " + user);
-                } catch (RepositoryException e) {
-                    logger.error("Repository exception", e);
-                    throw new ServletException("Unable to get UGC for " + user);
+            try {
+                if(user != null && operation.equalsIgnoreCase("deleteUgc")) {
+                    userUgcManagement.deleteUserUgc(resourceResolver, user);
+                } else if (user != null && operation.equalsIgnoreCase("deleteUser")){
+                    userUgcManagement.deleteUserAccount(resourceResolver, user);
+                } else if (user != null && operation.equalsIgnoreCase("getugc")){
+                    if (ENABLED){
+                        //final ResourceResolver resourceResolver = req.getResourceResolver();
+//                         user = req.getParameter("user");
+//                         operation = req.getParameter("operation");
+                        if (user != null && operation.equalsIgnoreCase("getugc")) {
+                            resp.setContentType("application/octet-stream");
+                            final String headerKey = "Content-Disposition";
+                            final String headerValue = "attachment; filename=\"" + user + "-UgcData.zip" + "\"";
+                            resp.setHeader(headerKey, headerValue);
+                            try {
+                                userUgcManagement.getUserUgc(resourceResolver, user, resp.getOutputStream());
+                                resp.setStatus(200);
+                            } catch (OperationException e) {
+                                logger.error("Operation exception", e);
+                                throw new ServletException("Unable to get UGC for " + user);
+                            } catch (JSONException e) {
+                                logger.error("Malformed json", e);
+                                throw new ServletException("Unable to get UGC for " + user);
+                            } catch (RepositoryException e) {
+                                logger.error("Repository exception", e);
+                                throw new ServletException("Unable to get UGC for " + user);
+                            }
+                        }
+                        else{
+                            throw new ServletException("Get Ugc: Undefined user/operation");
+                        }
+                    }
+                    else{
+                        logger.error("UGC Management not enabled");
+                        throw new ServletException("Unable to perform Operation: UGC Management not enabled");
+                    }
                 }
-            }
-            else{
-                throw new ServletException("Get Ugc: Undefined user/operation");
+                else{
+                    throw new ServletException("Unable to perform Operation: " + operation + " for user: " + user);
+                }
+            } catch (RepositoryException e) {
+                throw new ServletException("Unable to perform Operation: " + operation + " for user: " + user);
+            } catch (OperationException e) {
+                logger.error("operation error", e);
+                throw new ServletException("Unable to perform Operation: " + operation + " for user: " + user);
             }
         }
         else{
             logger.error("UGC Management not enabled");
             throw new ServletException("Unable to perform Operation: UGC Management not enabled");
         }
+
+
     }
 
     @Override
